@@ -1,0 +1,265 @@
+@media print {
+    body{
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        padding-top: 0 !important;
+    }
+    #toTop,
+    .topline,
+    .footer-top,
+    .search-open,
+    .limiter label,
+    .sidebar > div,
+    .login-message,
+    .request-livechat,
+    #search_mini_form,
+    .footer-bottom-links,
+    .quick-access .links,
+    .widget.widget-banner,
+    .quick-access .customer-name,
+    .category-products > .toolbar,
+    #report-a-problem .report-here,
+    #homepage-search .search-container,
+    #contact-info-wrapper .contact-select{
+        display: none !important;
+    }
+    /* force to show category list */
+    .sidebar .block-category-list{
+        display: block !important;
+        background: none;
+        border: 1px solid #F7F7F5;
+    }
+    /* header */
+    .stemcell header#header,
+    .stemcell header#header > .container_12{
+        background: none !important;
+    }
+    .stemcell header#header.floating > .container_12{
+        padding-left: 50px;
+        padding-right: 50px;
+    }
+    .main-container{
+        padding-top: 0;
+    }
+    header#header .logo{
+        max-width: 300px !important;
+    }
+    header#header.floating{
+        position: relative;
+        margin-bottom: 28px !important;
+    }
+    header#header.floating .logo{
+        opacity: 1 !important;
+        position: relative !important;
+        display: block !important;
+    }
+    .stemcell header#header .header-top-right{
+        float: right !important;
+        padding-top: 18px !important;
+        margin-left: 0 !important;
+    }
+    .stemcell header#header.floating .welcome-msg,
+    .stemcell header#header .country-flag,
+    .stemcell header#header .header-top-right .quick-access{
+        display: inline-block;
+    }
+    .stemcell header#header .header-top-right .quick-access{
+        padding-top: 15px !important;
+        margin-top: 0px !important;
+    }
+    /* homepage */
+    #homepage-search{
+        margin: 60px 10px 10px 0;
+    }
+    #homepage-search .search-heading{
+        font-size: 30px;
+        margin-bottom: 0px;
+    }
+    #featured-box-wrapper{
+        background: none;
+    }
+    #featured-box-wrapper .featured-box{
+        min-height: 300px !important;
+    }
+    /* product detail page */
+    #more-views-slider,
+    #more-views-slider-2,
+    #more-views-slider-2 li{
+        max-width: 260px !important;
+    }
+    .anchor-bar.horizontal-view a{
+        padding: 10px;
+        font-size: 12px;
+    }
+    .anchor-bar.horizontal-view.floating{
+        position: relative;
+        top: inherit;
+    }
+    .anchor-bar.horizontal-view .container_12{
+        padding-left: 0;
+        padding-right: 0;
+    }
+    /* product listing page */
+    .sidebar .block:last-child{
+        float: right;
+    }
+    .sidebar .block-related-cell-types{
+        float: right;
+    }
+    /* workflow step special print style */
+    #workflow-step.content-tab{
+        margin-bottom: 10px;
+    }
+    #workflow-step.content-tab li.step-indicator{
+        display: none;
+    }
+    #workflow-step.content-tab li{
+        display: block;
+    }
+    #workflow-step.content-tab li:before,
+    #workflow-step.content-tab li:after,
+    #workflow-step.content-tab li.active a:before,
+    #workflow-step.content-tab li.active a:after{
+        content: none;
+    }
+    #workflow-step.content-tab li.active a{
+        border-right: 1px solid #BBB;
+    }
+    #workflow-step.content-tab li a{
+        padding: 11px;
+    }
+    #workflow-step.content-tab li a span i{
+        display: none;
+    }
+    #workflow-step.content-tab li a span i.fa-arrow-circle-down,
+    #workflow-step.content-tab li:last-child a span i.fa-arrow-circle-down{
+        display: none;
+        right: 0;
+        font-size: 16px;
+        border: none;
+        top: auto;
+        width: auto;
+        z-index: auto;
+    }
+    #workflow-step.content-tab li.active a span i.fa-arrow-circle-down{
+        color: #EF8200;
+    }
+    .content-tab-bottom{
+        display: none;
+    }
+    /* cart page */
+    .stemcell table.data-table td{
+        padding: 10px;
+    }
+    #shopping-cart-table .product-box .product-image{
+        width: 80%;
+    }
+    #shopping-cart-table .item-sku{
+        float: none;
+    }
+    .cart-bottom > section{
+        width: 100%;
+    }
+    /* checkout page */
+    .opc-wrapper-opc .opc-col-left,
+    .opc-wrapper-opc .opc-col-center,
+    .opc-wrapper-opc .opc-col-right{
+        width: 48% !important;
+    }
+    .alpha{
+        margin-left: 0 !important;
+    }
+    .omega{
+        margin-right: 0 !important;
+    }
+}
+/* use tablet grid view for print view */
+@media print and (min-width: 481px) and (max-width: 767px){
+    .grid_0_md{
+        display: none;
+    }
+    .grid_2_md:nth-child(n),
+    .grid_3_md:nth-child(n),
+    .grid_4_md:nth-child(n),
+    .grid_6_md:nth-child(n){
+        clear: none;
+        margin: 1%;
+        float: left;
+    }
+    .grid_2_md:nth-child(6n+1),
+    .grid_3_md:nth-child(4n+1),
+    .grid_4_md:nth-child(3n+1),
+    .grid_6_md:nth-child(2n+1){
+        margin-left: 0;
+        clear: left;
+    }
+    .grid_2_md:nth-child(6n),
+    .grid_3_md:nth-child(4n),
+    .grid_4_md:nth-child(3n),
+    .grid_6_md:nth-child(2n){
+        margin-right: 0;
+        float: right;
+        clear: right;
+    }
+    .grid_5_md:nth-child(odd),
+    .grid_7_md:nth-child(odd){
+        margin-left: 0;
+        clear: left;
+    }
+    .grid_5_md:nth-child(even),
+    .grid_7_md:nth-child(even){
+        margin-right: 0;
+        float: right;
+        clear: right;
+    }
+    .grid_2_md{
+        width: 15%;
+        margin: 0 1% 10px 1%;
+    }
+    .grid_3_md{
+        width: 23.5%;
+        margin: 0 1% 15px 1%;
+    }
+    .grid_4_md{
+        width: 32%;
+        margin: 0 1% 15px 1%;
+    }
+    .grid_5_md{
+        width: 40%;
+        margin: 0 2% 20px 2%;
+    }
+    .grid_6_md{
+        width: 48%;
+        margin: 0 2% 20px 2%;
+    }
+    .grid_7_md{
+        width: 56%;
+        margin: 0 2% 20px 2%;
+    }
+    .grid_8_md{
+        width: 64%;
+        margin: 0 1% 10px 1%;
+    }
+    .grid_9_md{
+        width: 72%;
+        margin: 0 1% 10px 1%;
+    }
+    .grid_10_md{
+        width: 80%;
+        margin: 0 1% 10px 1%;
+    }
+    .grid_12_md{
+        width: 100%;
+        margin: 0;
+    }
+    .main-container > .row > .grid_12_md{
+        width: 98%;
+        margin: 0 1%;
+    }
+    .col_3_md{
+        width: 25%;
+    }
+    .col_4_md{
+        width: 33.33%;
+    }
+}

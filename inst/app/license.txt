@@ -1,0 +1,11 @@
+RNAseq Data Portal - Terms & Conditions:
+
+These terms govern your access to and use of this application. STEMCELL has made every attempt to ensure the accuracy and reliability of the information produced by this application. However, the information is provided "as is" without warranty or representation of any kind. STEMCELL does not accept responsibility or liability for the accuracy, content, completeness or reliability such information.
+
+STEMCELL reserves the right to make additions, deletions or alterations to this application at any time without prior notice.
+
+STEMCELL will not be liable for liability or damages of any kind arising from the use of this application, including, but not limited to direct, indirect, incidental, punitive and consequential damages.
+
+STEMCELL does not retain any data input into the application or the analysis and results generated therein, however you consent that processing and analysis will be performed on any data input into the application.
+
+By using this application, you agree to be bound by the user terms and conditions of the external hosting service found at "https://www.rstudio.com/about/rstudio-service-terms-of-use/".

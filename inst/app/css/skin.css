@@ -1,0 +1,194 @@
+/**
+*
+* This file is generated automaticaly. Please do no edit it directly cause all changes will be lost.
+*
+*/
+/*====== Font Replacement - Titles =======*/ 
+
+/*====== Site Bg =======*/
+body {background-color:#FFFFFF;}
+
+/*====== Skin Color #1 =======*/
+aside.sidebar .block.block-cart .product-details .product-box .price,
+aside.sidebar .block.block-cart .subtotal .price,
+a:hover,
+#footer .footer-address-block p a:hover,
+#footer address a:hover,
+.products-grid .product-name a:hover,
+.regular-price .price,
+.special-price .price,
+.price-from .price,
+.price-to .price,
+.products-grid .add-to-links li i:hover,
+.products-list .product-name a:hover,
+.minimal-price-link .price,
+.products-list .add-to-links i:hover,
+.block-vertical-nav li.level-top a.level-top:hover,
+.block-vertical-nav li.level-top.parent ul.level0 li a:hover,
+#categories-accordion .btn-cat.closed > i,
+.block-compare li.item .btn-remove i:hover,
+.availability.out-of-stock span,
+.availability-only i,
+div.quantity-decrease i:hover,
+div.quantity-increase i:hover,
+.catalog-product-view .box-reviews .form-add h3 span,
+.catalog-product-view .box-reviews ul li small span,
+.block-related .product-name a:hover,
+.block-related .block-content .block-subtitle a:hover,
+.product-options-bottom  i:hover,
+.price-as-configured .price,
+header#header .top-cart .product-name a:hover,
+header#header .top-cart .block-content .mini-products-list .product-details .price,
+.data-table .product-name a:hover,
+.data-table .c_actions a i:hover,
+.data-table .cart-price .price,
+.data-table .remove i:hover,
+.sp-methods .price,
+.cart .totals .checkout-types li a:hover,
+.dashboard .box-title a i:hover,
+.dashboard .box-head a i:hover,
+.my-account .addresses-list li.item a:hover,
+.my-account .data-table a:hover,
+.my-wishlist .data-table .table-buttons a i:hover,
+header#header .top-cart .block-content .subtotal .price,
+#login-holder form .actions > a:hover,
+#login-holder .link-box a:hover,
+.opc-wrapper-opc .page-title .text-login a:hover,
+.md-modal-footer a:hover,
+.multiple-checkout .grand-total .price,
+nav.breadcrumbs li a:hover,
+nav.breadcrumbs li a:hover + span,
+.nav-wide#nav-wide .top-content .top-menu-links li a,
+header#header .customer-name .user i,
+.tags-list li a:hover,
+.header-slider-container .iosSlider .slider .item .slide-container.slide-skin-2 h3 span,
+.header-slider-container .iosSlider .slider .item .slide-container.slide-skin-3 h3 span,
+.product-view .product-shop .add-to-links-box i:hover,
+#cart-accordion .accordion-content .crosssell li.item .product-name a:hover,
+.widget-latest li h3 a:hover,
+.widget-latest li .comments a:hover,
+.configurable-swatch-list .swatch-link:hover,
+.swatch-current .selected .swatch-link,
+.configurable-swatch-list .selected .swatch-link {color: #EF8200;}
+
+.block-vertical-nav li.active > a,
+.block-vertical-nav li.custom-active > a {color: #EF8200!important;}
+
+.category-products .toolbar-bottom div.loader,
+#footer .block-tags .actions a:hover,
+button.button:hover > span,
+ul.social-links li a i:hover,
+#footer .block-tags .tags-list li a:hover,
+.ui-slider .ui-slider-range,
+.block-compare .actions a:hover,
+.block-compare .actions button span,
+aside.sidebar .block-tags li a:hover,
+aside.sidebar .block-tags .actions a:hover,
+aside.sidebar .block-reorder .actions a:hover,
+.block-reorder .actions button span,
+aside.sidebar .block.block-wishlist .actions a:hover,
+.sorter .view-mode a:hover i,
+.sorter .view-mode strong i,
+.sorter a.desc i:hover,
+.sorter a.asc i:hover,
+div.label-sale,
+.products-grid .availability-only,
+.products-list .availability-only,
+.add-to-cart button.button span,
+.catalog-product-view .box-reviews .full-review,
+.iwdbutton button.button span,
+.cart .btn-proceed-checkout span,
+header#header .top-cart .block-content .actions .button span,
+.cart-table .buttons-row button.btn-continue:hover span,
+.my-wishlist .buttons-set .btn-update:hover span,
+header#header .top-cart .block-content .actions a:hover,
+#checkout-coupon-discount-load .discount-form .buttons-set button.button:hover span span,
+#onepagecheckout_orderform  #checkout-review-submit button span span,
+.md-modal-footer button.button:hover span span,
+nav.breadcrumbs li span:after,
+.header-slider-container .iosSlider .prev:hover i,
+.header-slider-container .iosSlider .next:hover i,
+.cart-remove-box a:hover,
+.add-to-cart-success a:hover,
+#login-holder form .actions button:hover span span,
+table#wishlist-table td .cart-cell button.button:hover span span,
+#popup-block .block-subscribe button.button:hover span span,
+aside.sidebar .block.block-layered-nav .actions a:hover,
+a.aw-blog-read-more:hover,
+body .opc-wrapper-opc .payment-block dt:hover,
+body .opc-wrapper-opc .payment-block dt.active,
+body .opc-wrapper-opc .text-login a.opc-link-login {background-color: #EF8200;}
+
+.label-type-5 div.label-sale:before,
+.products-grid.label-type-5 .availability-only:before,
+.products-list.label-type-5 .availability-only:before{
+	border-top-color: #EF8200;
+}
+.label-type-5 div.label-sale:after,
+.products-grid.label-type-5 .availability-only:after,
+.products-list.label-type-5 .availability-only:after{
+	border-bottom-color: #EF8200;
+}
+
+#footer .block-tags .actions a:hover,
+button.button:hover span,
+#footer .block-tags .tags-list li a:hover,
+.block-compare .actions a:hover,
+.block-compare .actions button span,
+aside.sidebar .block-tags li a:hover,
+aside.sidebar .block-tags .actions a:hover,
+aside.sidebar .block-reorder .actions a:hover,
+.block-reorder .actions button span,
+aside.sidebar .block.block-wishlist .actions a:hover,
+.add-to-cart button.button span,
+.iwdbutton button.button span,
+.cart .btn-proceed-checkout span,
+header#header .top-cart .block-content .actions .button span,
+.cart-table .buttons-row button.btn-continue:hover span,
+.my-wishlist .buttons-set .btn-update:hover span,
+header#header .top-cart .block-content .actions a:hover,
+#checkout-coupon-discount-load .discount-form .buttons-set button.button:hover span,
+#onepagecheckout_orderform  #checkout-review-submit button > span,
+.md-modal-footer button.button:hover > span,
+.cart-remove-box a:hover,
+.add-to-cart-success a:hover,
+#login-holder form .actions button:hover > span,
+#popup-block .block-subscribe button.button:hover > span,
+aside.sidebar .block.block-layered-nav .actions a:hover,
+a.aw-blog-read-more:hover,
+.swatch-current .selected .swatch-link,
+.configurable-swatch-list .selected .swatch-link,
+body .opc-wrapper-opc .payment-block dt:hover,
+body .opc-wrapper-opc .payment-block dt.active,
+body .opc-wrapper-opc .text-login a.opc-link-login {border-color: #EF8200;}
+
+/*====== Skin Color #2 =======*/
+a,
+.opc-wrapper-opc .page-title .text-login,
+.opc-wrapper-opc .page-title .text-login a,
+.nav-wide#nav-wide .top-content .top-menu-links li a:hover,
+.header-slider-container .iosSlider .slider .item h3,
+.header-slider-container .iosSlider .slider .item .slide-container.slide-skin-2 h4,
+.header-slider-container .iosSlider .slider .item .slide-container.slide-skin-3 h4 {color: #EF8200;}
+
+.products-grid .btn-quick-view > span,
+.products-list .btn-quick-view > span {
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#CCEF8200,endColorstr=#CCEF8200);
+	background-color: rgba(239,130,0, 0.8);
+}
+
+.ajax-media-button-holder .ajax-media,
+.products-grid .btn-quick-view:hover > span,
+.products-list .btn-quick-view:hover > span,
+span.label-new {background-color: #EF8200;}
+
+.label-type-5 span.label-new:before{
+    border-top-color: #EF8200;
+}
+.label-type-5 span.label-new:after{
+    border-bottom-color: #EF8200;
+}
+
+.product-view .product-name div.sku::selection {background-color: #EF8200;}
+.product-view .product-name div.sku::-moz-selection {background-color: #EF8200;}
+

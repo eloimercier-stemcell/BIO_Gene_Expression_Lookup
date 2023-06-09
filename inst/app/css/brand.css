@@ -1,0 +1,304 @@
+.brands-page .brand-content .section{
+    margin-bottom: 30px;
+    clear: both;
+}
+.brands-page .brand-content .section:last-child{
+    margin-bottom: 50px;
+}
+.support-info .support-sect{
+    float: left;
+    margin-bottom: 30px;
+}
+.support-info .support-sect a{
+    font-weight: bold;
+}
+.support-info .support-image{
+    margin-bottom: 15px;
+    text-align: center;
+}
+.support-info .support-image img{
+    border: 1px solid #F0F0EB;
+    max-height: 150px;
+}
+.support-info .support-image.round img{
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+}
+.support-info .support-advantage{
+    list-style: none;
+}
+.support-info .support-advantage li{
+    margin-bottom: 10px;
+}
+.comparison-detail{
+    display: inline-block;
+    background: #FAFAFA;
+    padding: 10px;
+    width: 30%;
+    margin: 8px 0px;
+    font-size: 14px;
+    line-height: 18px;
+}
+.comparison-block .iso-slider-container-single .comparison-detail{
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+.comparison-block .iso-slider-container-single .comparison-info-sect:last-child{
+    min-height: auto;
+}
+.comparison-image img{
+    border: 1px solid #F0F0EB;
+}
+.comparison-image.no-border img{
+    border: none;
+}
+.stemcell .col-main .comparison-detail h1{
+    font-size: 18px;
+    line-height: 22px;
+    padding: 5px;
+    color: #53585A;
+}
+.stemcell .col-main .comparison-detail h1 a,
+.stemcell .col-main .comparison-detail .sc-button a{
+    color: inherit;
+}
+.stemcell .col-main .comparison-detail a.orange{
+    color: #EF8200;
+}
+.stemcell .col-main .comparison-detail .sc-button a:hover{
+    color: inherit;
+}
+.stemcell .col-main .comparison-detail .comparison-info-sect.cta-sect a{
+    color: #EF8200;
+}
+.stemcell .col-main .comparison-detail a:hover{
+    color: #EF8200;
+}
+.comparison-detail .request-sample{
+    font-weight: bold;
+}
+.stemcell .col-main .comparison-detail a.request-sample{
+    color: #EF8200;
+}
+.comparison-info-sect{
+    margin-right: 5px;
+    padding: 15px 5px 10px 5px;
+}
+.comparison-info-sect:last-child{
+    border-bottom: none;
+}
+.comparison-info-sect ul{
+    list-style-type: none;
+    margin-left: 10px;
+    margin-top: 5px;
+    position: relative;
+}
+.comparison-info-sect ul li{
+    line-height: 18px;
+    margin-bottom: 5px;
+}
+.comparison-info-sect ul li:before{
+    content: '\2022';
+    font-size: 8px;
+    position: absolute;
+    left: -10px;
+}
+.comparison-info-sect ul li ul{
+    margin-left: 12px;
+    margin-top: 5px;
+}
+.comparison-info-sect ul li ul li:before{
+    content: '\2013';
+    font-size: 8px;
+    position: absolute;
+    left: -10px;
+}
+.comparison-detail .comparison-info-sect:first-child{
+    padding: 5px 5px 10px 5px;
+}
+.comparison-info-sect .figure-image{
+    margin-bottom: 10px;
+}
+.stemcell .col-main .comparison-detail h2{
+    font-size: 14px;
+    line-height: 18px;
+    color: #000;
+    margin-bottom: 0;
+}
+.comparison-block{
+    width: 100%;
+    margin-bottom: 50px;
+    overflow: hidden;
+    position: relative;
+}
+.comparison-block h1{
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+.stemcell .col-main .comparison-detail h1.sub-title{
+    font-size: 16px;
+    line-height: 20px;
+    height: auto;
+    margin-bottom: 0;
+    padding: 0 5px;
+}
+.comparison-block .notes{
+    font-size: 14px;
+    color: #6c6d6f
+}
+.comparison-block .iso-slider-container{
+    background: #FAFAFA;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-bottom: 15px;
+    margin-top: 10px;
+}
+.comparison-block .iso-slider-container .iso-slider-wrapper.three-line-title .comparison-detail h1{
+    height: 60px;
+}
+.comparison-block .expand-comparison,
+.comparison-block .collapse-comparison{
+    width: 100%;
+    background: #EDEDEC;
+    text-align: center;
+    color: #EF8200;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 20px;
+    padding: 10px 0;
+    position: absolute;
+    bottom: 0;
+    z-index: 5;
+    cursor: pointer;
+    display: none;
+}
+.comparison-block .collapse-comparison{
+    position: relative;
+}
+.comparison-block .expand-comparison.active,
+.comparison-block .collapse-comparison.active{
+    display: block;
+}
+.comparison-block .expand-comparison i,
+.comparison-block .collapse-comparison i{
+    margin-top: -2px;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+.comparison-block .iso-slider-container .prev,
+.comparison-block .iso-slider-container .next{
+    background: #FAFAFA;
+    width: 55px;
+}
+.comparison-block .iso-slider-container .prev i{
+    left: 25%;
+}
+.comparison-block .iso-slider-container .next i{
+    right: 25%;
+}
+.brands-page .main-container .page-title{
+    display: none;
+}
+.brand-logo h1{
+    margin-bottom: 10px;
+}
+.brand-logo img{
+    max-height: 40px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.comparison-block .iso-slider-container-single .comparison-info-sect{
+    padding-top: 0;
+    border-bottom: none;
+}
+.stemcell .col-main .iso-slider-container-single .comparison-detail h1{
+    padding: 2% 2% 10px 2%;
+    height: auto;
+}
+.comparison-left,
+.comparison-middle,
+.comparison-right{
+    float: left;
+    padding: 0 2% 2% 2%;
+}
+.comparison-left .comparison-info-sect,
+.comparison-middle .comparison-info-sect,
+.comparison-right .comparison-info-sect{
+    padding-left: 0;
+    padding-right: 0;
+}
+.comparison-left{
+    width: 28%;
+}
+.comparison-middle{
+    width: 28%;
+}
+.comparison-middle + .comparison-right{
+    width: 32%;
+}
+.comparison-right{
+    width: 64%;
+}
+.accordion .faq{
+    border-top: 1px solid #F1F1EC;
+    padding: 15px 0;
+    width: 100%;
+}
+.accordion .faq:last-child{
+    border-bottom: 1px solid #F1F1EC;
+}
+.accordion .faq .question,
+.accordion .faq .answer{
+    padding: 0 15px;
+}
+.accordion .faq .question{
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 20px;
+    cursor: pointer;
+    margin-bottom: 0;
+}
+.accordion .faq .answer{
+    font-size: 14px;
+    line-height: 18px;
+    margin-top: 10px;
+    margin-left: 21px;
+    display: none;
+}
+.accordion .faq .answer br{
+    line-height: 24px;
+}
+.accordion .faq .question:hover,
+.accordion .faq .question.active,
+.accordion .faq .question:hover i,
+.accordion .faq .question.active i{
+    color: #EF8200;
+}
+.accordion .faq .question i{
+    color: #BBB;
+    vertical-align: middle;
+    margin-top: -2px;
+    margin-right: 5px;
+    transition: none;
+    -moz-transition: none;
+    -webkit-transition: none;
+    -o-transition: none;
+}
+.accordion .faq .question span{
+    display: inline-block;
+    font-size: 15px;
+    line-height: 22px;
+    width: 90%;
+}
+/* brand page anchor should not be colored by default */
+.brands-page .accordion .faq .answer a{
+    color: inherit;
+}
+.cms-page-view .accordion .faq .answer a.orange,
+.cms-page-view .accordion .faq .answer a:hover,
+.brands-page .accordion .faq .answer a.orange,
+.brands-page .accordion .faq .answer a:hover{
+    color: #EF8200;
+}

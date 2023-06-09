@@ -1,0 +1,366 @@
+.grid_1_lg,
+.grid_2_lg,
+.grid_3_lg,
+.grid_4_lg,
+.grid_5_lg,
+.grid_6_lg,
+.grid_7_lg,
+.grid_8_lg,
+.grid_10_lg,
+.grid_12_lg,
+.grid_1_md,
+.grid_2_md,
+.grid_4_md,
+.grid_6_md,
+.grid_8_md,
+.grid_9_md,
+.grid_10_md,
+.grid_12_md,
+.grid_2_sm,
+.grid_6_sm,
+.grid_8_sm,
+.grid_10_sm,
+.grid_12_sm,
+.grid_5_xs,
+.grid_7_xs,
+.grid_12_xs{
+    float: left;
+}
+.grid_center{
+    float: none !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+@media all and (min-width: 1008px){
+    .grid_0_lg{
+        display: none;
+    }
+    .grid_2_lg:nth-child(6n+1),
+    .grid_3_lg:nth-child(4n+1),
+    .grid_4_lg:nth-child(3n+1),
+    .grid_6_lg:nth-child(2n+1){
+        margin-left: 0;
+        clear: left;
+    }
+    .grid_2_lg:nth-child(6n),
+    .grid_3_lg:nth-child(4n),
+    .grid_4_lg:nth-child(3n),
+    .grid_6_lg:nth-child(2n){
+        margin-right: 0;
+        float: right;
+        clear: right;
+    }
+    .grid_5_lg:nth-child(odd),
+    .grid_7_lg:nth-child(odd),
+    .grid_8_lg:nth-child(odd){
+        margin-left: 0;
+        clear: left;
+    }
+    .grid_5_lg:nth-child(even),
+    .grid_7_lg:nth-child(even),
+    .grid_8_lg:nth-child(even){
+        margin-right: 0;
+        float: right;
+        clear: right;
+    }
+    .grid_1_lg{
+        width: 7.5%;
+        margin: 0 1% 15px 1%;
+    }
+    .grid_2_lg{
+        width: 15%;
+        margin: 0 1% 20px 1%;
+    }
+    .grid_3_lg{
+        width: 23.5%;
+        margin: 0 1% 15px 1%;
+    }
+    .grid_4_lg{
+        width: 32%;
+        margin: 0 1% 15px 1%;
+    }
+    .grid_5_lg{
+        width: 40%;
+        margin: 0 2% 20px 2%;
+    }
+    .grid_6_lg{
+        width: 48%;
+        margin: 0 2% 20px 2%;
+    }
+    .grid_7_lg{
+        width: 56%;
+        margin: 0 2% 20px 2%;
+    }
+    .grid_8_lg{
+        width: 64%;
+        margin: 0 1% 10px 1%;
+    }
+    .grid_9_lg{
+        width: 72%;
+        margin: 0 1% 10px 1%;
+    }
+    .grid_10_lg{
+        width: 80%;
+        margin: 0 1% 10px 1%;
+    }
+    .grid_12_lg{
+        width: 100%;
+        margin: 0;
+    }
+    .main-container > .row > .grid_12_lg{
+        width: 98%;
+        margin: 0 1%
+    }
+    .col_3_lg{
+        width: 25%;
+    }
+    .col_4_lg{
+        width: 33.33%;
+    }
+}
+@media all and (min-width: 768px) and (max-width: 1007px){
+    .grid_0_md{
+        display: none;
+    }
+    .grid_2_md:nth-child(6n+1),
+    .grid_3_md:nth-child(4n+1),
+    .grid_4_md:nth-child(3n+1),
+    .grid_6_md:nth-child(2n+1){
+        margin-left: 0;
+        clear: left;
+    }
+    .grid_2_md:nth-child(6n),
+    .grid_3_md:nth-child(4n),
+    .grid_4_md:nth-child(3n),
+    .grid_6_md:nth-child(2n){
+        margin-right: 0;
+        float: right;
+        clear: right;
+    }
+    .grid_5_md:nth-child(odd),
+    .grid_7_md:nth-child(odd),
+    .grid_8_md:nth-child(odd){
+        margin-left: 0;
+        clear: left;
+    }
+    .grid_5_md:nth-child(even),
+    .grid_7_md:nth-child(even),
+    .grid_8_md:nth-child(even){
+        margin-right: 0;
+        float: right;
+        clear: right;
+    }
+    .grid_1_lg{
+        width: 7.5%;
+        margin: 0 1% 15px 1%;
+    }
+    .grid_2_md{
+        width: 15%;
+        margin: 0 1% 10px 1%;
+    }
+    .grid_3_md{
+        width: 23.5%;
+        margin: 0 1% 15px 1%;
+    }
+    .grid_4_md{
+        width: 32%;
+        margin: 0 1% 15px 1%;
+    }
+    .grid_5_md{
+        width: 40%;
+        margin: 0 2% 20px 2%;
+    }
+    .grid_6_md{
+        width: 48%;
+        margin: 0 2% 20px 2%;
+    }
+    .grid_7_md{
+        width: 56%;
+        margin: 0 2% 20px 2%;
+    }
+    .grid_8_md{
+        width: 64%;
+        margin: 0 1% 10px 1%;
+    }
+    .grid_9_md{
+        width: 72%;
+        margin: 0 1% 10px 1%;
+    }
+    .grid_10_md{
+        width: 80%;
+        margin: 0 1% 10px 1%;
+    }
+    .grid_12_md{
+        width: 100%;
+        margin: 0;
+    }
+    .main-container > .row > .grid_12_md{
+        width: 98%;
+        margin: 0 1%;
+    }
+    .col_3_md{
+        width: 25%;
+    }
+    .col_4_md{
+        width: 33.33%;
+    }
+}
+@media all and (min-width: 481px) and (max-width: 767px){
+    .grid_0_sm{
+        display: none;
+    }
+    .grid_2_sm:nth-child(6n+1),
+    .grid_3_sm:nth-child(4n+1),
+    .grid_4_sm:nth-child(3n+1),
+    .grid_6_sm:nth-child(2n+1){
+        margin-left: 0;
+        clear: left;
+    }
+    .grid_2_sm:nth-child(6n),
+    .grid_3_sm:nth-child(4n),
+    .grid_4_sm:nth-child(3n),
+    .grid_6_sm:nth-child(2n){
+        margin-right: 0;
+        float: right;
+        clear: right;
+    }
+    .grid_5_sm:nth-child(odd),
+    .grid_7_sm:nth-child(odd),
+    .grid_8_sm:nth-child(odd),
+    .grid_5_sm + .grid_7_sm,
+    .grid_9_sm + .grid_3_sm{
+        margin-left: 0;
+        clear: left;
+    }
+    .grid_5_sm:nth-child(even),
+    .grid_7_sm:nth-child(even),
+    .grid_8_sm:nth-child(even),
+    .grid_7_sm + .grid_5_sm,
+    .grid_3_sm + .grid_9_sm{
+        margin-right: 0;
+        float: right;
+        clear: right;
+    }
+    .grid_2_sm{
+        width: 15%;
+        margin: 0 1% 10px 1%;
+    }
+    .grid_3_sm{
+        width: 23.5%;
+        margin: 0 1% 10px 1%;
+    }
+    .grid_4_sm{
+        width: 32%;
+        margin: 0 1% 10px 1%;
+    }
+    .grid_5_sm{
+        width: 40%;
+        margin: 0 2% 20px 2%;
+    }
+    .grid_6_sm{
+        width: 48%;
+        margin: 0 2% 20px 2%;
+    }
+    .grid_7_sm{
+        width: 56%;
+        margin: 0 2% 20px 2%;
+    }
+    .grid_8_sm{
+        width: 64%;
+        margin: 0 1% 10px 1%;
+    }
+    .grid_9_sm{
+        width: 72%;
+        margin: 0 1% 10px 1%;
+    }
+    .grid_10_sm{
+        width: 80%;
+        margin: 0 1% 10px 1%;
+    }
+    .grid_12_sm{
+        width: 100%;
+        margin: 0;
+    }
+    .main-container > .row > .grid_12_sm{
+        width: 98%;
+        margin: 0 1%;
+    }
+}
+@media all and (max-width: 480px){
+    .grid_0_xs{
+        display: none;
+    }
+    .hidden_xs{
+        display: none;
+    }
+    .grid_3_xs:nth-child(4n+1),
+    .grid_4_xs:nth-child(3n+1),
+    .grid_6_xs:nth-child(2n+1){
+        margin-left: 0;
+        clear: left;
+    }
+    .grid_3_xs:nth-child(4n),
+    .grid_4_xs:nth-child(3n),
+    .grid_6_xs:nth-child(2n){
+        margin-right: 0;
+        float: right;
+        clear: right;
+    }
+    .grid_2_xs{
+        width: 15%;
+        margin: 0 1% 10px 1%;
+    }
+    .grid_3_xs{
+        width: 23.5%;
+        margin: 0 1% 10px 1%;
+    }
+    .grid_4_xs{
+        width: 32%;
+        margin: 0 1% 10px 1%;
+    }
+    .grid_5_xs{
+        width: 40%;
+        margin: 0 2% 10px 2%;
+    }
+    .grid_6_xs{
+        width: 48%;
+        margin: 0 2% 15px 2%;
+    }
+    .grid_7_xs{
+        width: 56%;
+        margin: 0 2% 10px 2%;
+    }
+    .grid_8_sm{
+        width: 64%;
+        margin: 0 1% 10px 1%;
+    }
+    .grid_9_xs{
+        width: 72%;
+        margin: 0 1% 10px 1%;
+    }
+    .grid_10_xs{
+        width: 80%;
+        margin: 0 1% 10px 1%;
+    }
+    .grid_12_xs{
+        width: 100%;
+        margin: 0;
+    }
+    .main-container > .row > .grid_12_xs{
+        width: 96%;
+        margin: 0 2%;
+    }
+    .grid_5_xs:nth-child(odd),
+    .grid_7_xs:nth-child(odd),
+    .grid_8_xs:nth-child(odd){
+        margin-left: 0;
+        clear: left;
+    }
+    .grid_5_xs:nth-child(even),
+    .grid_7_xs:nth-child(even),
+    .grid_8_xs:nth-child(even){
+        margin-right: 0;
+        float: right;
+        clear: right;
+    }
+}
