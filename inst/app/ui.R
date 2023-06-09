@@ -215,15 +215,21 @@ dashboardPage(
 
         tabItems(
 
-        #TAB1
+        #Select data set
             tabItem(tabName="data_selection_tab",
-
                 box(title="Data Sets", width=12, 
                     DTOutput("datasetListDT")
-
                  )
+            ),
 
+        #Results table
+            tabItem(tabName="res_table_tab",
+                box(title="Results Table", width=12, 
+                    DTOutput("resultTable")
+                 )
             )
+
+            
 
         ) #end tabItems
 
