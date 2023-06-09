@@ -8,22 +8,22 @@
 css_dir <- "./css"
 
 # logifySlider javascript function
-JS.logify <-
-  "
-// function to logify a sliderInput
-function logifySlider (sliderId, sci = false) {
-if (sci) {
-// scientific style
-$('#'+sliderId).data('ionRangeSlider').update({
-'prettify': function (num) { return ('10<sup>'+num+'</sup>'); }
-})
-} else {
-// regular number style
-$('#'+sliderId).data('ionRangeSlider').update({
-'prettify': function (num) { return (Math.pow(10, num)); }
-})
-}
-}"
+# JS.logify <-
+#   "
+# // function to logify a sliderInput
+# function logifySlider (sliderId, sci = false) {
+# if (sci) {
+# // scientific style
+# $('#'+sliderId).data('ionRangeSlider').update({
+# 'prettify': function (num) { return ('10<sup>'+num+'</sup>'); }
+# })
+# } else {
+# // regular number style
+# $('#'+sliderId).data('ionRangeSlider').update({
+# 'prettify': function (num) { return (Math.pow(10, num)); }
+# })
+# }
+# }"
 
 dashboardPage(
 
@@ -33,7 +33,7 @@ dashboardPage(
     ###############################
     ###############################
 
-    dashboardHeader(title="STEMCELL APP", titleWidth=350),
+    dashboardHeader(title="STEMCELL Expression Lookup App", titleWidth=350),
 
     ###############################
     ###############################
@@ -42,6 +42,7 @@ dashboardPage(
     ###############################
 
     dashboardSidebar(width=350,
+
         ##############
         # CSS
         ##############
@@ -70,14 +71,19 @@ dashboardPage(
         # MENU
         ##############
 
-
         sidebarMenu(id="menu1",
 
-        #TAB1
-            menuItem("TAB1",
-                tabName="TABNAME",
-                icon=icon("upload", "fa-lg")
-            )
+        #Select data set
+            menuItem("Select Data Set",
+                tabName="data_selection_tab",
+                icon=icon("hand-pointer", "fa-lg")
+            ),
+
+        #Result table
+            menuItem("Results table",
+                tabName="res_table_tab",
+                icon=icon("table", "fa-lg")
+            )            
         ) #end sidebarMenu
 
 
@@ -197,11 +203,11 @@ dashboardPage(
         # tags$style(type='text/css', "#memoryCalc {width:500px;}"),
 
         ##############
-        # OPTION BANNER
+        # BANNER
         ##############
 
-        box(width=12,
-            collapsible=TRUE),
+        # box(width=12,
+        #     collapsible=TRUE),
 
         ##############
         # DISPLAY TABS
@@ -210,9 +216,12 @@ dashboardPage(
         tabItems(
 
         #TAB1
-            tabItem(tabName="TABNAME",
+            tabItem(tabName="data_selection_tab",
 
-                box()
+                box(title="Data Sets", width=12, 
+                    DTOutput("datasetListDT")
+
+                 )
 
             )
 
