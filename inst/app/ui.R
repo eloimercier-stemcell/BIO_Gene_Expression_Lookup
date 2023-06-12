@@ -132,85 +132,17 @@ shinyUI <- fluidPage(
     ###############################
     
   sidebarPanel( 
-    width=4,
+    width=2,
 
         ##############
         # STYLE
         ##############
 
-        #Inherit CSS  
-        # tags$style(type='text/css', 
-        #            "#ctrlNum {border-radius: 0px}"),
-        # tags$style(type='text/css', 
-        #            "#testNum {border-radius: 0px}"),   
-        # tags$style(type='text/css', 
-        #            "#replicates {border-radius: 0px}"),   
-        
-        # tags$style(type="text/css", 
-        #            "form.well {max-width: 300px;
-        #               background: #F7F7F7;
-        #          aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa     width: 350px;
-        #               float: right;}"),
-        # tags$style(".navbar-default {background-color:#FFF;}
-        #             .navbar-brand {padding:0;}
-        #             .navbar .container-fluid {padding:0;}"),
-        # tags$style(HTML(".multicol .shiny-options-group{
-        #                    -webkit-column-count: 2; /* Chrome, Safari, Opera */ 
-        #                    -moz-column-count: 2;    /* Firefox */ 
-        #                    column-count: 2; 
-        #                    -moz-column-fill: balanced;
-        #                    -column-fill: balanced;
-        #                    }
-        #                    .checkbox{
-        #                    margin-top: 3px !important;
-        #                    -webkit-margin-after: 3px !important;
-        #                    }")),
-        # tags$style("#SexTab table.dataTable thead th, table.dataTable thead td {
-        #     border-bottom: 1px solid #ddd; border-top: 1px solid #ddd}"),
-        # tags$style("#SexTab table.dataTable {border-bottom: 1px solid #ddd}"),
-        # tags$style(HTML('#SexTab table.dataTable tr.selected td, table.dataTable td.selected {background-color: #E47C23 !important;}')),
-        
-        # # STYLE: makes toggle sliders orange
-        # tags$style(HTML(".bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-StemCellOrange,
-        #     .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-StemCellOrange {
-        #     color: #fff;
-        #     background:#E47C23;}")),
-        
-        # #Change color for dropdown menu for customer data email
-        # tags$style(HTML(' .dropdown-toggle:hover{color:#E47C23; background:#fff;}')),
-        # tags$style(HTML('.dropdown-toggle {color: #fff; background:#E47C23;}')),
-        # tags$style(HTML('.dropdown-toggle:active, .open .dropdown-toggle{color: #fff !important; background:#E47C23 !important;}')),
-        # tags$style(HTML('.dropdown-toggle:focus, .open .dropdown-toggle{color: #fff !important; background:#E47C23 !important;}')),
-        
-        # tags$style(HTML(".tooltip > .tooltip-inner {background-color: #E47C23;}")),
-        # tags$style(HTML(".tooltip + .tooltip.top > .tooltip-arrow {border-top-color: #E47C23;}")),
-        
-        
-        # # STYLE: makes radio buttons orange
-        # tags$style(HTML("input[type=radio]:checked + label:before,
-        #     input[type=checkbox]:checked + label:before {background: #E47C23 !important; 
-        #     border-color: #53585A !important; 
-        #     border-radius: 100px !important;
-        #     -webkit-transition: all .5s ease;
-        #     -moz-transition: all .5s ease;
-        #     -o-transition: all .5s ease;
-        #     -ms-transition: all .5s ease;
-        #     transition: all .5s ease;}")), 
-        # tags$style(HTML("input[type=radio] + label:before,
-        #     input[type=checkbox] + label:before {border-color: #53585A !important;
-        #     border-radius: 100px !important;
-        #     -webkit-transition: all .5s ease;
-        #     -moz-transition: all .5s ease;
-        #     -o-transition: all .5s ease;
-        #     -ms-transition: all .5s ease;
-        #     transition: all .5s ease;}")),
-    
-    #Adjust replicate number
-    #   fluidPage(tags$img(height=42, width=296, src="stemCell2.png")),
-    
-    # conditionalPanel(condition='input.analysisTabs == "dataIn"',                    
+        ##############
+        # MENU
+        ##############
+
         uiOutput("dataSetSelectionUI")                     
-    # )
     
 
   ),
@@ -236,10 +168,6 @@ shinyUI <- fluidPage(
         # PANELS
         ##############
 
-        # navbarPage(title='', id="analysisTabs", collapsible=TRUE,
-            # tabPanel(title="Result Table", value="resultTableTab",
-
-
         fluidRow(
             column(12,
                     htmlOutput("datasetInfoUI")
@@ -251,12 +179,9 @@ shinyUI <- fluidPage(
                           type=7,
                           color="#E47C23",
                           size=0.9)                    
-            # )
-        )
-               
+            )               
         )
     )
-    # ) #, class="tab-menu content-tab"
 
   
 )

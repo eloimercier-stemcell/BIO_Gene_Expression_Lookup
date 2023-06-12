@@ -126,5 +126,5 @@ shinyServer <- function(input, output, session)
 
 
 #TODO:
-#gene names
+#how to deal with padj=NA, usually from sample outliers
 
