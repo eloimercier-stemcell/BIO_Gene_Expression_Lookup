@@ -1,6 +1,6 @@
 ##############################################################
 ##############################################################
-#                         SALE APP                           #
+#                         EXPRESSION LOOKUP APP                           #
 ##############################################################
 ##############################################################
 
@@ -38,6 +38,18 @@ shinyServer <- function(input, output, session)
     })
 
     ###################################
+    #Data set info
+    ###################################
+
+    output$datasetInfoUI <- renderUI(
+        fluidRow(          
+            HTML(paste('<p style="font-size:15px">','<font color="#000000">','<b>DATASET: </b>', "BLA",'</font>','</p>','<br>')),
+            HTML(paste('<p style="font-size:15px">','<font color="#FE0400">','<b>COMP1: </b>', "BLA",'</font>','</p>','<br>')),
+            HTML(paste('<p style="font-size:15px">','<font color="#008BFF">','<b>COMP2: </b>', "BLA",'</font>','</p>','<br>'))
+        )
+)
+
+    ###################################
     #Load data
     ###################################
 
@@ -64,10 +76,6 @@ shinyServer <- function(input, output, session)
     #Result table
     ###################################
 
-
-
-datatable(df) %>% formatStyle(names(df), backgroundColor = styleInterval(brks, clrs))
-
     output$resultTable <- renderDT({
 
         data <- getDataTable()
@@ -82,7 +90,7 @@ datatable(df) %>% formatStyle(names(df), backgroundColor = styleInterval(brks, c
                 rownames=FALSE,
                 selection = 'single',
                 filter=list(position='top',clear = TRUE),
-                options=list(autoWidth = TRUE, pageLength=10)) %>% 
+                options=list(autoWidth = TRUE, pageLength=100)) %>% 
               formatStyle( #color by logFC
                 'log2FoldChange',
                 backgroundColor = styleInterval(brks, clrs)
@@ -94,5 +102,8 @@ datatable(df) %>% formatStyle(names(df), backgroundColor = styleInterval(brks, c
 }
 
 
+#TODO:
+#have legend indicating blue=higher in PSC, red=higher in media
+#fix icon on server
 
 

@@ -1,6 +1,6 @@
 ##############################################################
 ##############################################################
-#                         SALE APP                           #
+#                         EXPRESSION LOOKUP APP                           #
 ##############################################################
 ##############################################################
 
@@ -66,6 +66,8 @@ dashboardPage(
         ##############
         # STYLE
         ##############
+
+        tags$style("@import url(https://use.fontawesome.com/releases/v5.7.2/css/all.css);"), #to load all fonts
 
         ##############
         # MENU
@@ -206,8 +208,12 @@ dashboardPage(
         # BANNER
         ##############
 
-        # box(width=12,
-        #     collapsible=TRUE),
+        box(width=12,
+            collapsible=FALSE,
+            fluidRow(
+                htmlOutput("datasetInfoUI")
+                )
+        ),
 
         ##############
         # DISPLAY TABS
