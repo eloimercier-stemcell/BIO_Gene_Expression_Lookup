@@ -59,41 +59,29 @@ shinyUI <- fluidPage(
                    background-color: #E47C23 !important;
                    color: white}')),
 
-    # #THIS CODE STOPS AN ERROR WHERE SWEET ALERT DOESN'T RENDER ON FIREFOX
-    # tags$style(HTML('window.swal = this.swal = this.Sweetalert;')),
-    # tags$style(HTML('$.fn.modal.Constructor.prototype.enforceFocus = function() {};')),
-    # tags$style(HTML('<script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>')),
+    # tags$style(".selectize-input {margin-top: 0px;}"),
+    # tags$style(".selectize-input {border-radius: 0px;}"),
+    # tags$style(".selectize-input.dropdown-active {border-radius:0px}"),
+    # tags$style(".selectize-dropdown {border-radius:0px}"),
+    # tags$style(".handsontable table thead th{
+    #             color: white; 
+    #             background-color: #E47C23;  
+    #             font-weight:bold;}"),
+    # tags$style(".wtBorder{ background-color: #53585A !important;}"),
+    # tags$style(".introjs-helperNumberLayer {background: #E47C23;}"),
+    # tags$style(HTML(".thumbnail:hover {
+    #               position:relative;
+    #               top:-25px;
+    #               left:-35px;
+    #               width:800px;
+    #               height:auto;
+    #               display:block;
+    #               z-index:999;
+    #               }")), 
 
-    #OPTION TO DISPLAY ONE VALUE PER ROW IN SELECTIZEINPUT
-    tags$head(tags$style(HTML(" 
-          .selectize-control.multi .selectize-input > div {
-            display: block; 
-        }"))),
-
-    tags$style(".selectize-input {margin-top: 0px;}"),
-    tags$style(".selectize-input {border-radius: 0px;}"),
-    tags$style(".selectize-input.dropdown-active {border-radius:0px}"),
-    tags$style(".selectize-dropdown {border-radius:0px}"),
-    tags$style(".handsontable table thead th{
-                color: white; 
-                background-color: #E47C23;  
-                font-weight:bold;}"),
-    tags$style(".wtBorder{ background-color: #53585A !important;}"),
-    tags$style(".introjs-helperNumberLayer {background: #E47C23;}"),
-    tags$style(HTML(".thumbnail:hover {
-                  position:relative;
-                  top:-25px;
-                  left:-35px;
-                  width:800px;
-                  height:auto;
-                  display:block;
-                  z-index:999;
-                  }")), 
     tags$style(type='text/css', "#useSampDat button{background: #E47C23; color: white; !important;}"),
     tags$head(tags$style(".progress-bar{background-color:#E47C23;}
                        .col-sm-12{padding:0;margin-bottom:30px;}")),
-
-
 
     ###############################
     ###############################
@@ -107,10 +95,8 @@ shinyUI <- fluidPage(
                         <div class='col-sm-2'>
                         </div>
                       <div class='col-sm-5'>
-                        <a href='/' class='logo'>
                           <img src='//tbcdn.talentbrew.com/company/8172/v1_0/img/stemcell_logo.png' 
                           alt='STEMCELL Technologies'>
-                        </a>
                       </div>
                       <div class='clear'>
                       </div>
@@ -118,7 +104,8 @@ shinyUI <- fluidPage(
                    <ul class='link-list' aria-hidden='false' aria-expanded='true'>
                    </ui>
                   </div>"
-              )),
+              )
+              ),
   
   
 
@@ -132,7 +119,7 @@ shinyUI <- fluidPage(
     ###############################
     
   sidebarPanel( 
-    width=2,
+    width=2, fuild=FALSE,
 
         ##############
         # STYLE

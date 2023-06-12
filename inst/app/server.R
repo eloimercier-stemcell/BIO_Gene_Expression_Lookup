@@ -15,7 +15,7 @@ shinyServer <- function(input, output, session)
     ###################################
 
     data.dir <- "data"
-    dataListFile <- file.path(data.dir,"sale_app_data_list.xlsx")
+    dataListFile <- file.path(data.dir,"data_set_list.xlsx")
     dataSetList <- reactiveValues(table=NA, datasets=NA) #store all the info about the data sets
 
     ###################################
@@ -42,12 +42,11 @@ shinyServer <- function(input, output, session)
     output$dataSetSelectionUI <- renderUI({
         selectizeInput(
             inputId="dataSetSelected",
-                label="Available Data Set:",
+                label="Available Data Sets:",
                 choices=dataSetList$datasets, selected = "", multiple = FALSE, 
                 options = list(placeholder = 'Select a data set',onInitialize = I('function() { this.setValue(""); }'))
             )
         })
-
 
 
     ###################################
@@ -64,8 +63,8 @@ shinyServer <- function(input, output, session)
             dataset_info_text <- paste0('
                 <p style="font-size:12px">
                 <font color="#000000"><b>',description,'</b></font><br>
-                <font color="#FE0400">Higher in ', group1,'</font>;
-                <font color="#008BFF">Higher in ', group2,'</font>
+                <font color="#FE0400">Higher expression in ', group1,'</font>;
+                <font color="#008BFF">Higher expression in ', group2,'</font>
                 </p>
                 ')
 
@@ -113,7 +112,7 @@ shinyServer <- function(input, output, session)
                     rownames=FALSE,
                     selection = 'single',
                     filter=list(position='top',clear = TRUE),
-                    options=list(autoWidth = TRUE, pageLength=100)) %>% 
+                    options=list(autoWidth = F, pageLength=50, scrollX = TRUE)) %>% 
                   formatStyle( #color by logFC
                     'log2FoldChange',
                     backgroundColor = styleInterval(brks, clrs)
