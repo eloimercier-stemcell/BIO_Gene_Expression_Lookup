@@ -121,6 +121,10 @@ shinyUI <- fluidPage(
               )),
   
   
+
+
+
+
     ###############################
     ###############################
     #          SIDEPANEL          #
@@ -204,9 +208,9 @@ shinyUI <- fluidPage(
     #Adjust replicate number
     #   fluidPage(tags$img(height=42, width=296, src="stemCell2.png")),
     
-    conditionalPanel(condition='input.analysisTabs == "dataIn"',                    
+    # conditionalPanel(condition='input.analysisTabs == "dataIn"',                    
         uiOutput("dataSetSelectionUI")                     
-    )
+    # )
     
 
   ),
@@ -232,17 +236,27 @@ shinyUI <- fluidPage(
         # PANELS
         ##############
 
-        navbarPage(title='', id="analysisTabs", collapsible=TRUE,
-            tabPanel(title="Input Data Table", value="dataIn",
+        # navbarPage(title='', id="analysisTabs", collapsible=TRUE,
+            # tabPanel(title="Result Table", value="resultTableTab",
+
+
+        fluidRow(
+            column(12,
+                    htmlOutput("datasetInfoUI")
+                 ),
+
+            column(12,
+                # box(title="Result Table", width=12,            
                 withSpinner(DTOutput("resultTable"),
-                              type=7,
-                              color="#E47C23",
-                              size=0.9)                    
-               )
+                          type=7,
+                          color="#E47C23",
+                          size=0.9)                    
+            # )
+        )
                
-    ), class="tab-menu content-tab"
-  )
-  
+        )
+    )
+    # ) #, class="tab-menu content-tab"
 
   
 )

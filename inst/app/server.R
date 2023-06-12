@@ -26,7 +26,10 @@ shinyServer <- function(input, output, session)
         #validate(need(file.exists(dataListFile),"Sorry, we cannot find the list of data sets."))
         if(file.exists(dataListFile)){
             dataTable <- openxlsx::read.xlsx(dataListFile)
-            rownames(dataTable) <- dataTable[,1]
+            if(!all(c("Dataset","Description", "Condition1", "Condition2", "Location") %in% colnames(dataTable))){
+                stop("Missing columns in dataListFile!")
+            }
+            rownames(dataTable) <- dataTable[,"Dataset"]
             dataSetList$table <- dataTable
             dataSetList$datasets <- rownames(dataTable)
         }
@@ -51,13 +54,24 @@ shinyServer <- function(input, output, session)
     #Data set info
     ###################################
 
-    output$datasetInfoUI <- renderUI(
-        fluidRow(          
-            HTML(paste('<p style="font-size:15px">','<font color="#000000">','<b>DATASET: </b>', "BLA",'</font>','</p>','<br>')),
-            HTML(paste('<p style="font-size:15px">','<font color="#FE0400">','<b>COMP1: </b>', "BLA",'</font>','</p>','<br>')),
-            HTML(paste('<p style="font-size:15px">','<font color="#008BFF">','<b>COMP2: </b>', "BLA",'</font>','</p>','<br>'))
-        )
-)
+    output$datasetInfoUI <- renderUI({
+        if(!is.null(input$dataSetSelected) & !identical(input$dataSetSelected,"")){
+
+            description <- dataSetList$table[input$dataSetSelected,"Description"]
+            group1 <- dataSetList$table[input$dataSetSelected,"Condition1"]
+            group2 <- dataSetList$table[input$dataSetSelected,"Condition2"]
+
+            dataset_info_text <- paste0('
+                <p style="font-size:12px">
+                <font color="#000000"><b>',description,'</b></font><br>
+                <font color="#FE0400">Higher in ', group1,'</font>;
+                <font color="#008BFF">Higher in ', group2,'</font>
+                </p>
+                ')
+
+            HTML(dataset_info_text)
+        }
+    })
 
     ###################################
     #Load data
@@ -74,7 +88,8 @@ shinyServer <- function(input, output, session)
             colnames(data)[1] <- "Gene ID"
             data$log2FoldChange <- round(data$log2FoldChange,3)
             data$padj <- round(data$padj,3)
-            column_order <- c("Gene ID", "fullName", "alias", "log2FoldChange", "padj")
+            data <- data[order(data$log2FoldChange,decreasing=TRUE),]
+            column_order <- c("symbol", "alias","fullName","Gene ID", "log2FoldChange", "padj")
             data <- data[,column_order]
 
             return(data)
@@ -94,7 +109,6 @@ shinyServer <- function(input, output, session)
             max_val <- max(abs(data$log2FoldChange), na.rm=T)
             brks <- seq(from=-max_val, to=max_val, length.out=100)
             clrs <- colorRampPalette(c("#008BFF","#FFFFFF","#FE0400"))(length(brks)+1) #blue=negative logFC, red=positive
-
             DT::datatable(data,
                     rownames=FALSE,
                     selection = 'single',
@@ -112,6 +126,5 @@ shinyServer <- function(input, output, session)
 
 
 #TODO:
-#fix icon on server
-
+#gene names
 
