@@ -101,7 +101,7 @@ shinyUI <- fluidPage(
     ###############################
     ###############################
   
-  headerPanel(windowTitle="STEMCELL Technologies Genetic Analysis Tool", 
+  headerPanel(windowTitle="STEMCELL Technologies Gene Expression Lookup", 
               HTML("<div class='row'>
                       <div class='wrapper top'>
                         <div class='col-sm-2'>
@@ -204,23 +204,9 @@ shinyUI <- fluidPage(
     #Adjust replicate number
     #   fluidPage(tags$img(height=42, width=296, src="stemCell2.png")),
     
-    conditionalPanel(condition='input.analysisTabs == "dataIn"',
-                     
-
-      selectInput(
-      inputId="TEST1",
-      label="Choose",
-      choices=LETTERS[1:5],
-      selected = NULL,
-      multiple = FALSE,
-      selectize = TRUE,
-      width = NULL,
-      size = NULL
+    conditionalPanel(condition='input.analysisTabs == "dataIn"',                    
+        uiOutput("dataSetSelectionUI")                     
     )
-
-
-                     
-    ),
     
 
   ),
@@ -232,29 +218,31 @@ shinyUI <- fluidPage(
     ###############################
 
   
-  mainPanel(
+    mainPanel(
 
-    tags$style(".navbar-default {background-color:#FFF;}
+        ##############
+        # STYLE
+        ##############
+
+        tags$style(".navbar-default {background-color:#FFF;}
                 .navbar-brand {padding:0;}
                 .navbar .container-fluid {padding:0;}"),
     
-    
-    navbarPage(title='', id="analysisTabs", collapsible=TRUE,
-               tabPanel(title="Input Data Table", value="dataIn",
+        ##############
+        # PANELS
+        ##############
 
-
+        navbarPage(title='', id="analysisTabs", collapsible=TRUE,
+            tabPanel(title="Input Data Table", value="dataIn",
+                withSpinner(DTOutput("resultTable"),
+                              type=7,
+                              color="#E47C23",
+                              size=0.9)                    
                )
                
-               #Outputs are what users see.  Use Output()
     ), class="tab-menu content-tab"
-  ),
+  )
   
-  conditionalPanel(condition="input.analysisTabs != 'dataPlot'",
-                   fluidRow(column(width=12, 
-                                   HTML("<div class='row'><div><div class='col-sm-2'></div>
-                       <div class='col-sm-5'><hr>Copyright &copy 2023 by STEMCELL Technologies Inc. All rights reserved.</div>
-                       </div></div>"
-                                   ))))
-  
+
   
 )

@@ -16,26 +16,36 @@ shinyServer <- function(input, output, session)
 
     data.dir <- "data"
     dataListFile <- file.path(data.dir,"sale_app_data_list.xlsx")
-    datasetList <- reactiveValues(table=NA, file=dataListFile)
-
+    dataSetList <- reactiveValues(table=NA, datasets=NA) #store all the info about the data sets
 
     ###################################
     #Get list of data sets
     ###################################
 
-    output$datasetListDT <- renderDT({
-        validate(need(file.exists(datasetList$file),"Sorry, we cannot find the list of data sets."))
-
-        dataListTable <- openxlsx::read.xlsx(datasetList$file)
-        datasetList$table <- dataListTable
-
-        dataListTable <- dataListTable[,colnames(dataListTable)!="Location"]
-        DT::datatable(dataListTable,
-                rownames=FALSE,
-                selection = 'single',
-                filter=list(position='top',clear = TRUE),
-                options=list(autoWidth = TRUE, pageLength=10))
+    observe({
+        #validate(need(file.exists(dataListFile),"Sorry, we cannot find the list of data sets."))
+        if(file.exists(dataListFile)){
+            dataTable <- openxlsx::read.xlsx(dataListFile)
+            rownames(dataTable) <- dataTable[,1]
+            dataSetList$table <- dataTable
+            dataSetList$datasets <- rownames(dataTable)
+        }
     })
+
+    ###################################
+    #Create data set selection menu
+    ###################################
+
+    output$dataSetSelectionUI <- renderUI({
+        selectizeInput(
+            inputId="dataSetSelected",
+                label="Available Data Set:",
+                choices=dataSetList$datasets, selected = "", multiple = FALSE, 
+                options = list(placeholder = 'Select a data set',onInitialize = I('function() { this.setValue(""); }'))
+            )
+        })
+
+
 
     ###################################
     #Data set info
@@ -54,21 +64,20 @@ shinyServer <- function(input, output, session)
     ###################################
 
     getDataTable <- reactive({
-        # Initial value of allDat while waiting for data to be submitted
-        if(!is.null(input$datasetListDT_rows_selected)){
-          dataset_selected <- datasetList$table[input$datasetListDT_rows_selected,]
-          data_file <- file.path(data.dir,dataset_selected$Location)
-          validate(need(file.exists(data_file),"Sorry, the data set you selected is not available."))
-          data <- openxlsx::read.xlsx(data_file)
+        if(!is.null(input$dataSetSelected) & !identical(input$dataSetSelected,"")){
+            data_file <- dataSetList$table[input$dataSetSelected,"Location"]
+            data_file_loc <- file.path(data.dir, data_file)
+            validate(need(file.exists(data_file_loc),"Sorry, the data set you selected is not available."))
+            data <- openxlsx::read.xlsx(data_file_loc)
 
-          #format data
-          colnames(data)[1] <- "Gene ID"
-          data$log2FoldChange <- round(data$log2FoldChange,3)
-          data$padj <- round(data$padj,3)
-          column_order <- c("Gene ID", "fullName", "alias", "log2FoldChange", "padj")
-          data <- data[,column_order]
+            #format data
+            colnames(data)[1] <- "Gene ID"
+            data$log2FoldChange <- round(data$log2FoldChange,3)
+            data$padj <- round(data$padj,3)
+            column_order <- c("Gene ID", "fullName", "alias", "log2FoldChange", "padj")
+            data <- data[,column_order]
 
-          return(data)
+            return(data)
         }
     })
 
@@ -79,23 +88,23 @@ shinyServer <- function(input, output, session)
     output$resultTable <- renderDT({
 
         data <- getDataTable()
-        validate(need(!all(is.null(data)),"Please select a data set!"))
-        data <- data[!is.na(data$log2FoldChange),,drop=FALSE] #remove gene with no logFC
+        if(!all(is.null(data))){
+            data <- data[!is.na(data$log2FoldChange),,drop=FALSE] #remove gene with no logFC
 
-        max_val <- max(abs(data$log2FoldChange), na.rm=T)
-        brks <- seq(from=-max_val, to=max_val, length.out=100)
-        clrs <- colorRampPalette(c("#008BFF","#FFFFFF","#FE0400"))(length(brks)+1) #blue=negative logFC, red=positive
+            max_val <- max(abs(data$log2FoldChange), na.rm=T)
+            brks <- seq(from=-max_val, to=max_val, length.out=100)
+            clrs <- colorRampPalette(c("#008BFF","#FFFFFF","#FE0400"))(length(brks)+1) #blue=negative logFC, red=positive
 
-        DT::datatable(data,
-                rownames=FALSE,
-                selection = 'single',
-                filter=list(position='top',clear = TRUE),
-                options=list(autoWidth = TRUE, pageLength=100)) %>% 
-              formatStyle( #color by logFC
-                'log2FoldChange',
-                backgroundColor = styleInterval(brks, clrs)
-              )
-
+            DT::datatable(data,
+                    rownames=FALSE,
+                    selection = 'single',
+                    filter=list(position='top',clear = TRUE),
+                    options=list(autoWidth = TRUE, pageLength=100)) %>% 
+                  formatStyle( #color by logFC
+                    'log2FoldChange',
+                    backgroundColor = styleInterval(brks, clrs)
+                  )
+        }
 
     })
 
@@ -103,7 +112,6 @@ shinyServer <- function(input, output, session)
 
 
 #TODO:
-#have legend indicating blue=higher in PSC, red=higher in media
 #fix icon on server
 
 
