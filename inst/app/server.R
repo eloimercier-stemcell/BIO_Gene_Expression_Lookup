@@ -7,6 +7,10 @@
 
 #setwd("~/GitHub/BIO_Gene_Expression_Lookup/inst/app")
 
+
+# TODO: 
+# add gene search box
+
 shinyServer <- function(input, output, session)
 {
 
@@ -48,6 +52,15 @@ shinyServer <- function(input, output, session)
             )
         })
 
+    ###################################
+    #Create gene search box
+    ###################################
+
+    output$geneListSelectionUI <- renderUI({
+        textInput("geneList_selected",
+            label=h3("Input gene list"),
+            placeholder= "Your, gene, list")
+    })    
 
     ###################################
     #Data set info
@@ -65,7 +78,7 @@ shinyServer <- function(input, output, session)
                 <font color="#000000"><b>',description,'</b></font><br>
                 <font color="#FE0400">Higher expression in ', group1,'</font>;
                 <font color="#008BFF">Higher expression in ', group2,'</font> <br>
-                <font color="#000000"><em>','Note: missing pvalue indicates gene expression outliers.','</em></font>
+                <font color="#000000"><em>','Note: a missing pvalue indicatse the presence of sample outliers for that gene.','</em></font>
                 </p>
                 ')
 
@@ -80,7 +93,6 @@ shinyServer <- function(input, output, session)
     getData <- reactive({
         if(!is.null(input$dataSetSelected) & !identical(input$dataSetSelected,"")){
             data_file <- dataSetList$table[input$dataSetSelected,"Location"]
-            # data_file_loc <- file.path(data.dir, data_file)
             data_file_loc <- file.path(data_file)
             validate(need(file.exists(data_file_loc),"Sorry, the data set you selected is not available. Please contact the MBBG team."))
             data <- readRDS(data_file_loc)
@@ -91,12 +103,11 @@ shinyServer <- function(input, output, session)
 
             #result table
             res_table <- as.data.frame(data[["results"]])
-            res_table$Gene <- rownames(res_table)
             res_table$log2FoldChange <- round(res_table$log2FoldChange,3)
             res_table$padj <- round(res_table$padj,3)
             res_table <- res_table[order(res_table$log2FoldChange,decreasing=TRUE),]
             res_table <- res_table[!is.na(res_table$log2FoldChange),,drop=FALSE] #remove gene with no logFC
-            column_order <- c("Gene", "log2FoldChange", "padj")
+            column_order <- c("Gene","Full Name","Aliases","Gene ID","log2FoldChange","padj")
             res_table <- res_table[,column_order]
             data[["results"]] <- res_table
 
@@ -108,12 +119,40 @@ shinyServer <- function(input, output, session)
     })
 
     ###################################
+    #subset selected genes if any
+    ###################################
+
+    getResultsForSelectedGenes <- eventReactive(c(input$dataSetSelected,input$submitBtn.geneListSel),{
+        res_table <- getData()[["results"]]
+        if(!all(is.null(res_table))){
+            #subset selected genes if any
+            if(!all(is.null(input$geneList_selected)) & input$geneList_selected!=""){
+                #parse gene list
+                gene_vec <- unlist(strsplit(gsub("\\s","",input$geneList_selected),",",fixed=TRUE))
+                #find ensembl ID
+
+                genes_found <- smartFindAl(genes=gene_vec, convert_to="ENSEMBL", org_data.db=org.Hs.eg.db, mVals="list") 
+                genes_found <- na.omit(unlist(genes_found))
+
+                if(length(genes_found)){
+                    return(res_table[genes_found,])
+                }
+            } else {
+                return(res_table)
+            }
+        }
+
+    })
+
+
+    ###################################
     #Result table
     ###################################
 
     output$resultTable <- renderDT({
 
-        res_table <- getData()[["results"]]
+        # res_table <- getData()[["results"]]
+        res_table <- getResultsForSelectedGenes()
         if(!all(is.null(res_table))){
 
             max_val <- max(abs(res_table$log2FoldChange), na.rm=T)
@@ -139,26 +178,27 @@ shinyServer <- function(input, output, session)
 
     output$expressionPlot <- renderPlotly({
         res_count <- getData()[["counts"]]
-        res_table <- getData()[["results"]]
+        # res_table <- getData()[["results"]]
+        res_table <- getResultsForSelectedGenes()        
         sample_table <- getData()[["sampleTable"]]
-        if(!all(is.null(res_count)) & !is.null(input$resultTable_rows_selected)){
-
-            symbolSel <- rownames(res_table[input$resultTable_rows_selected,,drop=FALSE])
-            mat <- res_count[symbolSel,,drop=FALSE]
+        if(!all(is.null(res_count)) & !is.null(input$resultTable_rows_selected) & !identical(NA,input$resultTable_rows_selected)){ #row selected is NULL on initialization, NA if gene is not found in the table anymore
+            geneID_selected <- res_table[input$resultTable_rows_selected,"Gene ID"]
+            symbol_selected <- res_table[input$resultTable_rows_selected,"Gene"]
+            mat <- res_count[geneID_selected,,drop=FALSE]
             df <- reshape2::melt(mat)
             colnames(df) <- c("Gene","Sample","Expression")
 
-            df$Group <- sample_table[df$Sample,"Condition"]
+            ugroups <- unique(sample_table[df$Sample,"Condition"]) 
+            ugroups <- c(ugroups[ugroups!="hPSC"], "hPSC")  #fix the order of the group, hPSC always last
+            df$Group <- factor(sample_table[df$Sample,"Condition"], levels=c(ugroups))
             group_colors <- c("#FE0400","#008BFF")
-            ugroups <- unique(sample_table[df$Sample,"Condition"]) #get the name of the condition that is not hPSC
-            names(group_colors) <- c(ugroups[ugroups!="hPSC"], "hPSC") 
+            names(group_colors) <- ugroups 
             df$Cell_Line <- sample_table[df$Sample,"Cell_Line"]
 
-            p <- ggplot(df, aes(x=Group, y=Expression, label=Sample, color=Group, group=Cell_Line)) + geom_point() + ggtitle(symbolSel)
+            p <- ggplot(df, aes(x=Group, y=Expression, label=Sample, color=Group, group=Cell_Line)) + geom_point() + ggtitle(symbol_selected)
             p <- p + xlab("") + ylab("Expression") + theme(legend.position = "none", axis.text.x = element_text(angle = -45))
             p <- p +  scale_colour_manual(values=group_colors)
             ggplotly(p) %>% config(displayModeBar = F)
-
         }
 
     })
