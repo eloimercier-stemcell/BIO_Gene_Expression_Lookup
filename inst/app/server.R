@@ -133,7 +133,8 @@ shinyServer <- function(input, output, session)
             #subset selected genes if any
             if(!all(is.null(input$geneList_selected)) & input$geneList_selected!=""){
                 #parse gene list
-                gene_vec <- unlist(strsplit(gsub("\\s","",input$geneList_selected),",",fixed=TRUE))
+                gene_vec <- unlist(trimws(strsplit(input$geneList_selected,",| ")[[1]]))
+                gene_vec <- gene_vec[gene_vec!=""]
                 #find ensembl ID
                 genes_id <- smartFindAl(genes=gene_vec, convert_to="ENSEMBL", org_data.db=org.Hs.eg.db, mVals="list") 
                 genes_id <- na.omit(unlist(genes_id))
