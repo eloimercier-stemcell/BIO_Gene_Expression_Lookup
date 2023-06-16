@@ -217,7 +217,7 @@ shinyServer <- function(input, output, session)
 
             plot_title <- paste0("Normalized ", symbol_selected ," Expression \nin ",group1," and ", group2) #stringr::str_wrap
 
-            p <- ggplot(df, aes(x=Group, y=Expression, label=Sample, color=Group, group=Cell_Line)) + geom_point() + geom_jitter(width = 0.25) 
+            p <- ggplot(df, aes(x=Group, y=Expression, label=Sample, color=Group, group=Cell_Line)) + geom_point() + geom_jitter(width = 0.25, height=0) 
             p <- p + ggtitle(plot_title) + xlab("") + ylab("Expression") + theme(legend.position = "none", axis.text.x = element_text(angle = -45), plot.title = element_text(size = 10))
             p <- p + scale_colour_manual(values=group_colors)
             p <- p + scale_x_discrete(labels= c(group2, group1)) #fix x labels

@@ -46,7 +46,7 @@ for(i in seq_len(nrow(all_conditions))){
     cond_i <- all_conditions[i,"Condition"]
     print(paste0(experiment_i,": ",cond_i, " vs ","hPSC"))
 
-    sample_table <- as.data.frame(all_sample_info[all_sample_info$Condition %in% c("hPSC", cond_i),])
+    sample_table <- as.data.frame(all_sample_info[all_sample_info$Condition %in% c("hPSC", cond_i) & all_sample_info$Experiment %in% c("hPSC", experiment_i),])
     data_quant_files <- file.path(sample_table$Location,"quant.sf")
     sample_table <- sample_table[,-which(colnames(sample_table)=="Location")]
     rownames(sample_table) <- sample_table$Sample
