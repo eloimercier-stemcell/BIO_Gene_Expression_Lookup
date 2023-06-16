@@ -9,7 +9,9 @@
 
 
 # TODO: 
-# missing gene name and alias resulting in plot error for CO day 40 ENSG...269693 (4th row)
+# show sample outliers with crook distance
+# move data to server
+# save group1 and group2 in reactive values
 
 shinyServer <- function(input, output, session)
 {
@@ -30,12 +32,17 @@ shinyServer <- function(input, output, session)
         #validate(need(file.exists(dataListFile),"Sorry, we cannot find the list of data sets."))
         if(file.exists(dataListFile)){
             dataTable <- openxlsx::read.xlsx(dataListFile)
-            if(!all(c("Dataset","Description", "Condition1", "Condition2", "Location") %in% colnames(dataTable))){
+            if(!all(c("Dataset","Description", "Condition1", "Condition2", "Input_group", "Location") %in% colnames(dataTable))){
                 stop("Missing columns in dataListFile!")
             }
             rownames(dataTable) <- dataTable[,"Dataset"]
             dataSetList$table <- dataTable
-            dataSetList$datasets <- rownames(dataTable)
+
+            #split datasets into groups
+            input_groups <- unique(dataTable$Input_group)
+            datasetL <- lapply(input_groups, function(x){dataTable[dataTable$Input_group==x,"Dataset"]})
+            names(datasetL) <- input_groups
+            dataSetList$datasets <- datasetL
         }
     })
 
@@ -111,9 +118,11 @@ shinyServer <- function(input, output, session)
             res_table <- res_table[order(res_table$log2FoldChange,decreasing=TRUE),]
             res_table <- res_table[!is.na(res_table$log2FoldChange),,drop=FALSE] #remove gene with no logFC
             res_table <- res_table[!is.na(res_table$Gene),,drop=FALSE] #remove gene with no symbol
-            column_order <- c("Gene","Full Name","Aliases","Gene ID","log2FoldChange","padj")
-            res_table <- res_table[,column_order]
+            res_table$Aliases <- sapply(res_table$Aliases, paste0, collapse=", ") #convert list to vector
             attr(res_table, "max_val") <- max(abs(res_table$log2FoldChange), na.rm=T) #remember max logFC value even when table is subsetted
+            # column_order <- c("Gene","Full Name","Aliases","Gene ID","log2FoldChange","padj")
+            # res_table <- res_table[,column_order]
+            # colnames(res_table) <- c("Gene", "Full Name", "Alternate Gene Names","Gene ID", "log2 Fold Change vs. hPSC","Adjusted P-Value")
             data[["results"]] <- res_table
 
             #count table
@@ -158,21 +167,25 @@ shinyServer <- function(input, output, session)
     output$resultTable <- renderDT({
         res_table <- getResultsForSelectedGenes()
         if(!all(is.null(res_table))){
+
             max_val <- attr(res_table, "max_val") 
             brks <- seq(from=-max_val, to=max_val, length.out=100)
             clrs <- colorRampPalette(c("#008BFF","#FFFFFF","#FE0400"))(length(brks)+1) #blue=negative logFC, red=positive
-            # res_table <- res_table[,-which(colnames(res_table)=="Aliases")]
+
+            column_order <- c("Gene","Full Name","Aliases","Gene ID","log2FoldChange","padj")
+            res_table <- res_table[,column_order]
+            colnames(res_table) <- c("Gene", "Full Name", "Alternate Gene Names","Gene ID", "log2 Fold Change vs. hPSC","Adjusted P-Value")
+
             DT::datatable(res_table,
                     rownames=FALSE,
                     selection = 'single',
                     filter=list(position='top',clear = TRUE),
                     options=list(autoWidth = FALSE, pageLength=25, scrollX = TRUE, width = "100%")) %>% 
                   formatStyle( #color by logFC
-                    'log2FoldChange',
+                    'log2 Fold Change vs. hPSC',
                     backgroundColor = styleInterval(brks, clrs)
                   )
         }
-
     })
 
 
@@ -189,19 +202,26 @@ shinyServer <- function(input, output, session)
             symbol_selected <- res_table[input$resultTable_rows_selected,"Gene"]
             mat <- res_count[geneID_selected,,drop=FALSE]
             df <- reshape2::melt(mat)
+            DF <<- df
             colnames(df) <- c("Gene","Sample","Expression")
 
             ugroups <- unique(sample_table[df$Sample,"Condition"]) 
-            ugroups <- c(ugroups[ugroups!="hPSC"], "hPSC")  #fix the order of the group, hPSC always last
+            ugroups <- c("hPSC", ugroups[ugroups!="hPSC"])  #fix the order of the group, hPSC always last
             df$Group <- factor(sample_table[df$Sample,"Condition"], levels=c(ugroups))
             group_colors <- c("#FE0400","#008BFF")
             names(group_colors) <- ugroups 
             df$Cell_Line <- sample_table[df$Sample,"Cell_Line"]
 
-            p <- ggplot(df, aes(x=Group, y=Expression, label=Sample, color=Group, group=Cell_Line)) + geom_point() + ggtitle(symbol_selected)
-            p <- p + xlab("") + ylab("Expression") + theme(legend.position = "none", axis.text.x = element_text(angle = -45))
-            p <- p +  scale_colour_manual(values=group_colors)
-            ggplotly(p) %>% config(displayModeBar = F)
+            group1 <- dataSetList$table[input$dataSetSelected,"Condition1"] #more verbose name for condition 1
+            group2 <- dataSetList$table[input$dataSetSelected,"Condition2"] #hPSC
+
+            plot_title <- paste0("Normalized ", symbol_selected ," Expression \nin ",group1," and ", group2) #stringr::str_wrap
+
+            p <- ggplot(df, aes(x=Group, y=Expression, label=Sample, color=Group, group=Cell_Line)) + geom_point() + geom_jitter(width = 0.25) 
+            p <- p + ggtitle(plot_title) + xlab("") + ylab("Expression") + theme(legend.position = "none", axis.text.x = element_text(angle = -45), plot.title = element_text(size = 10))
+            p <- p + scale_colour_manual(values=group_colors)
+            p <- p + scale_x_discrete(labels= c(group2, group1)) #fix x labels
+            ggplotly(p) # %>% config(displayModeBar = F)
         }
 
     })
@@ -209,8 +229,4 @@ shinyServer <- function(input, output, session)
 
 
 } #end shinyServer
-
-
-#TODO:
-#how to deal with padj=NA, usually from sample outliers
 
