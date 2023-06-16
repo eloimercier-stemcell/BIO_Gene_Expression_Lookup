@@ -55,7 +55,7 @@ suppressMessages(library(org.Hs.eg.db))
 # org_data.db=org.Hs.eg.db
 # g2 <- smartFindAl(genes, convert_to, org_data.db, mVals="list") 
 
-smartFindAl <- function(genes, convert_to, org_data.db, mVals="first", ...) #choose what you want to convert into regardless of key type; support mixed key types (e.g. "ENSG..." and "POU5F1" in same input)
+geneKeys2Ensembl <- function(genes, convert_to, org_data.db, mVals="first", ...) #choose what you want to convert into regardless of key type; support mixed key types (e.g. "ENSG..." and "POU5F1" in same input)
 {
     genes <- toupper(genes)
     mapColumns <- c("SYMBOL", "ENSEMBL", "ALIAS")
