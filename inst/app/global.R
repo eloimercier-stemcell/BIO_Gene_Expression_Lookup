@@ -20,41 +20,6 @@ suppressMessages(library(plotly))
 suppressMessages(library(org.Hs.eg.db))
 
 
-# gene_keys <- c("ENSG00000000003", "BRICD4", "HLA","AKJAHKJASHJKSHKA")
-# df=res
-# search_columns <- c("Gene ID", "Gene","Aliases", "stat" )
-
-# geneKeys2Ensembl <- function(gene_keys, df, search_columns){
-#     #gene_keys: a vector of key ID, symbol, keyword
-#     #to convert to Ensembl ID by searching within column data
-#     if(!all(search_columns %in% colnames(df))){stop("Not all search columns found in df object!")}
-#     if(!all("Gene ID" %in% colnames(df))){stop("Not all Gene ID not found in df object!")}
-
-#     gene_keys2 <- sapply(gene_keys, function(x){paste0("\\b",x,"\\b")}) #add word boundary to find exact word
-#     match_gene_key <- rep(FALSE, nrow(df))
-#     for (i in seq_along(search_columns)){
-#         genes_found <- sapply(gene_keys2 , function(x){grep(x, df[,search_columns[i]], ignore.case=TRUE)})
-#         match_gene_key[unlist(genes_found)] <- TRUE
-#     }
-
-#     # gene_keys <- toupper(gene_keys)
-#     # match_gene_key <- rep(FALSE, nrow(df))
-#     # for (i in seq_along(search_columns)){
-#     #     genes_found <- toupper(df[,search_columns[i]]) %in% gene_keys
-#     #     match_gene_key <- match_gene_key | genes_found
-#     # }
-
-#     gene_ensembl <- df[match_gene_key,"Gene ID"]
-#     gene_ensembl
-# }
-
-# g1 <- geneKeys2Ensembl(gene_keys, df, search_columns)
-
-# genes <- c("ENSG00000000003", "BRICD4", "DP","AKJAHKJASHJKSHKA")
-# convert_to="ENSEMBL"
-# org_data.db=org.Hs.eg.db
-# g2 <- smartFindAl(genes, convert_to, org_data.db, mVals="list") 
-
 smartFindAl <- function(genes, convert_to, org_data.db, mVals="first", ...) #choose what you want to convert into regardless of key type; support mixed key types (e.g. "ENSG..." and "POU5F1" in same input)
 {
     mapColumns <- c("SYMBOL", "ENSEMBL", "ALIAS")

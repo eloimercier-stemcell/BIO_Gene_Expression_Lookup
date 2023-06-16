@@ -197,7 +197,7 @@ shinyUI <- fluidPage(
                           size=0.9)                    
             )
         )
-    )
+    , width = 11) #end mainPanel
 
   
 )

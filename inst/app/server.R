@@ -143,7 +143,7 @@ shinyServer <- function(input, output, session)
                 if(length(genes_id)){
                     return(res_table[genes_id,])
                 }
-            } else {
+            } else { #otherwise return the whole table
                 return(res_table)
             }
         }
@@ -156,18 +156,17 @@ shinyServer <- function(input, output, session)
     ###################################
 
     output$resultTable <- renderDT({
-
-        # res_table <- getData()[["results"]]
         res_table <- getResultsForSelectedGenes()
         if(!all(is.null(res_table))){
-            max_val <- attr(res_table, "max_val") #max(abs(res_table$log2FoldChange), na.rm=T)
+            max_val <- attr(res_table, "max_val") 
             brks <- seq(from=-max_val, to=max_val, length.out=100)
             clrs <- colorRampPalette(c("#008BFF","#FFFFFF","#FE0400"))(length(brks)+1) #blue=negative logFC, red=positive
+            # res_table <- res_table[,-which(colnames(res_table)=="Aliases")]
             DT::datatable(res_table,
                     rownames=FALSE,
                     selection = 'single',
                     filter=list(position='top',clear = TRUE),
-                    options=list(autoWidth = FALSE, pageLength=50, scrollX = TRUE)) %>% 
+                    options=list(autoWidth = FALSE, pageLength=25, scrollX = TRUE, width = "100%")) %>% 
                   formatStyle( #color by logFC
                     'log2FoldChange',
                     backgroundColor = styleInterval(brks, clrs)
@@ -183,7 +182,6 @@ shinyServer <- function(input, output, session)
 
     output$expressionPlot <- renderPlotly({
         res_count <- getData()[["counts"]]
-        # res_table <- getData()[["results"]]
         res_table <- getResultsForSelectedGenes()        
         sample_table <- getData()[["sampleTable"]]
         if(!all(is.null(res_count)) & !is.null(input$resultTable_rows_selected) & !identical(NA,input$resultTable_rows_selected)){ #row selected is NULL on initialization, NA if gene is not found in the table anymore
