@@ -9,7 +9,8 @@
 
 
 # TODO: 
-# add gene search box
+# set global min max value so the correct color is displayed when subsetting
+#werid empty rows when CORO7, EN2, CFH
 
 shinyServer <- function(input, output, session)
 {
@@ -44,9 +45,9 @@ shinyServer <- function(input, output, session)
     ###################################
 
     output$dataSetSelectionUI <- renderUI({
-        selectizeInput(
+        selectizeInput(width="500px",
             inputId="dataSetSelected",
-                label="Available Data Sets:",
+                label=h3("Available Data Sets:"),
                 choices=dataSetList$datasets, selected = "", multiple = FALSE, 
                 options = list(placeholder = 'Select a data set',onInitialize = I('function() { this.setValue(""); }'))
             )
@@ -57,9 +58,13 @@ shinyServer <- function(input, output, session)
     ###################################
 
     output$geneListSelectionUI <- renderUI({
-        textInput("geneList_selected",
+        tagList(
+        textInput("geneList_selected", width="500px",
             label=h3("Input gene list"),
-            placeholder= "Your, gene, list")
+            placeholder= "Your, gene, list"),
+
+        actionButton("submitBtn.geneListSel", label="Submit", icon.library="font awesome",css.class='sc-button')
+        )
     })    
 
     ###################################
@@ -109,6 +114,7 @@ shinyServer <- function(input, output, session)
             res_table <- res_table[!is.na(res_table$log2FoldChange),,drop=FALSE] #remove gene with no logFC
             column_order <- c("Gene","Full Name","Aliases","Gene ID","log2FoldChange","padj")
             res_table <- res_table[,column_order]
+            attr(res_table, "max_val") <- max(abs(res_table$log2FoldChange), na.rm=T) #remember max logFC value even when table is subsetted
             data[["results"]] <- res_table
 
             #count table
@@ -130,12 +136,12 @@ shinyServer <- function(input, output, session)
                 #parse gene list
                 gene_vec <- unlist(strsplit(gsub("\\s","",input$geneList_selected),",",fixed=TRUE))
                 #find ensembl ID
+                genes_id <- smartFindAl(genes=gene_vec, convert_to="ENSEMBL", org_data.db=org.Hs.eg.db, mVals="list") 
+                genes_id <- na.omit(unlist(genes_id))
+                genes_id <- unique(intersect(rownames(res_table), genes_id)) #it can happen that the gene ids are not in the table
 
-                genes_found <- smartFindAl(genes=gene_vec, convert_to="ENSEMBL", org_data.db=org.Hs.eg.db, mVals="list") 
-                genes_found <- na.omit(unlist(genes_found))
-
-                if(length(genes_found)){
-                    return(res_table[genes_found,])
+                if(length(genes_id)){
+                    return(res_table[genes_id,])
                 }
             } else {
                 return(res_table)
@@ -154,8 +160,7 @@ shinyServer <- function(input, output, session)
         # res_table <- getData()[["results"]]
         res_table <- getResultsForSelectedGenes()
         if(!all(is.null(res_table))){
-
-            max_val <- max(abs(res_table$log2FoldChange), na.rm=T)
+            max_val <- attr(res_table, "max_val") #max(abs(res_table$log2FoldChange), na.rm=T)
             brks <- seq(from=-max_val, to=max_val, length.out=100)
             clrs <- colorRampPalette(c("#008BFF","#FFFFFF","#FE0400"))(length(brks)+1) #blue=negative logFC, red=positive
             DT::datatable(res_table,

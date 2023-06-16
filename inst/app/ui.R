@@ -161,18 +161,22 @@ shinyUI <- fluidPage(
 
         fluidRow(
             column(12,
-                box(width=5,
+                box(width=5, height="120px",
                     uiOutput("dataSetSelectionUI"),
                     status="primary", solidHeader =T
                 ),
-                box(width=5,
-                    uiOutput("geneListSelectionUI"),     
+                box(width=7, height=120,
+                    uiOutput("geneListSelectionUI"),
+
+                    # actionButton("submitBtn.geneListSel", label="Submit", icon.library="font awesome",css.class='sc-button'),
+   
                     status="primary", solidHeader =T
-                ),
-                box(width=2,
-                    actionButton("submitBtn.geneListSel", label="Submit", icon.library="font awesome",css.class='sc-button'),
-                    status="primary", solidHeader =T
-                )                
+                )
+                # ,
+                # box(width=2,
+                #     actionButton("submitBtn.geneListSel", label="Submit", icon.library="font awesome",css.class='sc-button'),
+                #     status="primary", solidHeader =T
+                # )                
             ),
 
 
