@@ -88,7 +88,6 @@ shinyServer <- function(input, output, session)
                 <font color="#000000"><b>',description,'</b></font><br>
                 <font color="#FE0400">Higher expression in ', group1,'</font>;
                 <font color="#008BFF">Higher expression in ', group2,'</font> <br>
-                <font color="#000000"><em>','Note: missing pvalues indicate presence of outliers and associated logFC should be considered with care.','</em></font>
                 </p>
                 ')
 
