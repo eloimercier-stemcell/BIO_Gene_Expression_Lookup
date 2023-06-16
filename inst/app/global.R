@@ -16,4 +16,5 @@ suppressMessages(library(shinyWidgets))
 suppressMessages(library(shinyjs))
 suppressMessages(library(shinyalert))
 suppressMessages(library(DT))
+suppressMessages(library(plotly))
 

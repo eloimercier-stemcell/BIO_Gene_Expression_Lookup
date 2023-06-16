@@ -90,49 +90,45 @@ shinyUI <- fluidPage(
     ###############################
   
   headerPanel(windowTitle="STEMCELL Technologies Gene Expression Lookup", 
-              HTML("<div class='row'>
-                      <div class='wrapper top'>
-                        <div class='col-sm-2'>
-                        </div>
-                      <div class='col-sm-5'>
-                          <img src='//tbcdn.talentbrew.com/company/8172/v1_0/img/stemcell_logo.png' 
-                          alt='STEMCELL Technologies'>
-                      </div>
-                      <div class='clear'>
-                      </div>
-                   </div>
-                   <ul class='link-list' aria-hidden='false' aria-expanded='true'>
-                   </ui>
-                  </div>"
-              )
-              ),
+      HTML("<div class='row'>
+              <div class='wrapper top'>
+                <div class='col-sm-2'>
+                </div>
+              <div class='col-sm-5'>
+                  <img src='//tbcdn.talentbrew.com/company/8172/v1_0/img/stemcell_logo.png' 
+                  alt='STEMCELL Technologies'>
+              </div>
+              <div class='clear'>
+              </div>
+           </div>
+           <ul class='link-list' aria-hidden='false' aria-expanded='true'>
+           </ui>
+          </div>"
+        )
+    ),
   
   
-
-
-
-
     ###############################
     ###############################
     #          SIDEPANEL          #
     ###############################
     ###############################
     
-  sidebarPanel( 
-    width=2, fuild=FALSE,
+  # sidebarPanel( 
+  #   width=2, fuild=FALSE,
 
-        ##############
-        # STYLE
-        ##############
+  #       ##############
+  #       # STYLE
+  #       ##############
 
-        ##############
-        # MENU
-        ##############
+  #       ##############
+  #       # MENU
+  #       ##############
 
-        uiOutput("dataSetSelectionUI")                     
+  #       # uiOutput("dataSetSelectionUI")                     
     
 
-  ),
+  # ),
   
     ###############################
     ###############################
@@ -150,6 +146,14 @@ shinyUI <- fluidPage(
         tags$style(".navbar-default {background-color:#FFF;}
                 .navbar-brand {padding:0;}
                 .navbar .container-fluid {padding:0;}"),
+        #box color: only workd with box(..., status="primary", solidHeader =T)
+        tags$style(HTML(" 
+                    .box.box-solid.box-primary>.box-header {
+                    }
+                    .box.box-solid.box-primary{
+                    background:#D6D6D6
+                    }
+        ")),   
     
         ##############
         # PANELS
@@ -157,16 +161,29 @@ shinyUI <- fluidPage(
 
         fluidRow(
             column(12,
+                box(
+                    uiOutput("dataSetSelectionUI"),
+                    status="primary", solidHeader =T
+                    )
+            ),
+
+
+            column(12,
                     htmlOutput("datasetInfoUI")
                  ),
 
-            column(12,
-                # box(title="Result Table", width=12,            
+            column(9,
                 withSpinner(DTOutput("resultTable"),
                           type=7,
                           color="#E47C23",
                           size=0.9)                    
-            )               
+            ),
+            column(3,
+                withSpinner(plotlyOutput("expressionPlot", height = 807),
+                          type=7,
+                          color="#E47C23",
+                          size=0.9)                    
+            )
         )
     )
 

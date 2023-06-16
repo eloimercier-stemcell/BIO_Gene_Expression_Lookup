@@ -64,7 +64,8 @@ shinyServer <- function(input, output, session)
                 <p style="font-size:12px">
                 <font color="#000000"><b>',description,'</b></font><br>
                 <font color="#FE0400">Higher expression in ', group1,'</font>;
-                <font color="#008BFF">Higher expression in ', group2,'</font>
+                <font color="#008BFF">Higher expression in ', group2,'</font> <br>
+                <font color="#000000"><em>','Note: missing pvalue indicates gene expression outliers.','</em></font>
                 </p>
                 ')
 
@@ -76,20 +77,31 @@ shinyServer <- function(input, output, session)
     #Load data
     ###################################
 
-    getDataTable <- reactive({
+    getData <- reactive({
         if(!is.null(input$dataSetSelected) & !identical(input$dataSetSelected,"")){
             data_file <- dataSetList$table[input$dataSetSelected,"Location"]
-            data_file_loc <- file.path(data.dir, data_file)
-            validate(need(file.exists(data_file_loc),"Sorry, the data set you selected is not available."))
-            data <- openxlsx::read.xlsx(data_file_loc)
+            # data_file_loc <- file.path(data.dir, data_file)
+            data_file_loc <- file.path(data_file)
+            validate(need(file.exists(data_file_loc),"Sorry, the data set you selected is not available. Please contact the MBBG team."))
+            data <- readRDS(data_file_loc)
 
-            #format data
-            colnames(data)[1] <- "Gene ID"
-            data$log2FoldChange <- round(data$log2FoldChange,3)
-            data$padj <- round(data$padj,3)
-            data <- data[order(data$log2FoldChange,decreasing=TRUE),]
-            column_order <- c("symbol", "alias","fullName","Gene ID", "log2FoldChange", "padj")
-            data <- data[,column_order]
+            ###############
+            #Format tables
+            ###############
+
+            #result table
+            res_table <- as.data.frame(data[["results"]])
+            res_table$Gene <- rownames(res_table)
+            res_table$log2FoldChange <- round(res_table$log2FoldChange,3)
+            res_table$padj <- round(res_table$padj,3)
+            res_table <- res_table[order(res_table$log2FoldChange,decreasing=TRUE),]
+            res_table <- res_table[!is.na(res_table$log2FoldChange),,drop=FALSE] #remove gene with no logFC
+            column_order <- c("Gene", "log2FoldChange", "padj")
+            res_table <- res_table[,column_order]
+            data[["results"]] <- res_table
+
+            #count table
+            data[["count"]] <- data[["count"]][rownames(res_table),]
 
             return(data)
         }
@@ -101,18 +113,17 @@ shinyServer <- function(input, output, session)
 
     output$resultTable <- renderDT({
 
-        data <- getDataTable()
-        if(!all(is.null(data))){
-            data <- data[!is.na(data$log2FoldChange),,drop=FALSE] #remove gene with no logFC
+        res_table <- getData()[["results"]]
+        if(!all(is.null(res_table))){
 
-            max_val <- max(abs(data$log2FoldChange), na.rm=T)
+            max_val <- max(abs(res_table$log2FoldChange), na.rm=T)
             brks <- seq(from=-max_val, to=max_val, length.out=100)
             clrs <- colorRampPalette(c("#008BFF","#FFFFFF","#FE0400"))(length(brks)+1) #blue=negative logFC, red=positive
-            DT::datatable(data,
+            DT::datatable(res_table,
                     rownames=FALSE,
                     selection = 'single',
                     filter=list(position='top',clear = TRUE),
-                    options=list(autoWidth = F, pageLength=50, scrollX = TRUE)) %>% 
+                    options=list(autoWidth = FALSE, pageLength=50, scrollX = TRUE)) %>% 
                   formatStyle( #color by logFC
                     'log2FoldChange',
                     backgroundColor = styleInterval(brks, clrs)
@@ -121,7 +132,40 @@ shinyServer <- function(input, output, session)
 
     })
 
-}
+
+    ###################################
+    #Expression plot
+    ###################################
+
+    output$expressionPlot <- renderPlotly({
+        res_count <- getData()[["counts"]]
+        res_table <- getData()[["results"]]
+        sample_table <- getData()[["sampleTable"]]
+        if(!all(is.null(res_count)) & !is.null(input$resultTable_rows_selected)){
+
+            symbolSel <- rownames(res_table[input$resultTable_rows_selected,,drop=FALSE])
+            mat <- res_count[symbolSel,,drop=FALSE]
+            df <- reshape2::melt(mat)
+            colnames(df) <- c("Gene","Sample","Expression")
+
+            df$Group <- sample_table[df$Sample,"Condition"]
+            group_colors <- c("#FE0400","#008BFF")
+            ugroups <- unique(sample_table[df$Sample,"Condition"]) #get the name of the condition that is not hPSC
+            names(group_colors) <- c(ugroups[ugroups!="hPSC"], "hPSC") 
+            df$Cell_Line <- sample_table[df$Sample,"Cell_Line"]
+
+            p <- ggplot(df, aes(x=Group, y=Expression, label=Sample, color=Group, group=Cell_Line)) + geom_point() + ggtitle(symbolSel)
+            p <- p + xlab("") + ylab("Expression") + theme(legend.position = "none", axis.text.x = element_text(angle = -45))
+            p <- p +  scale_colour_manual(values=group_colors)
+            ggplotly(p) %>% config(displayModeBar = F)
+
+        }
+
+    })
+
+
+
+} #end shinyServer
 
 
 #TODO:
