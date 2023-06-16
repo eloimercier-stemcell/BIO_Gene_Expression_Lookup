@@ -165,37 +165,26 @@ shinyUI <- fluidPage(
                     uiOutput("dataSetSelectionUI"),
                     status="primary", solidHeader =T
                 ),
-                box(width=7, height=120,
-                    uiOutput("geneListSelectionUI"),
-
-                    # actionButton("submitBtn.geneListSel", label="Submit", icon.library="font awesome",css.class='sc-button'),
-   
+                box(width=7, height="120px",
+                    uiOutput("geneListSelectionUI"),   
                     status="primary", solidHeader =T
-                )
-                # ,
-                # box(width=2,
-                #     actionButton("submitBtn.geneListSel", label="Submit", icon.library="font awesome",css.class='sc-button'),
-                #     status="primary", solidHeader =T
-                # )                
+                )             
             ),
 
 
             column(12,
                     htmlOutput("datasetInfoUI")
                  ),
-
             column(9,
                 withSpinner(DTOutput("resultTable"),
                           type=7,
                           color="#E47C23",
                           size=0.9)                    
-            ),
+            ),                       
             column(3,
-                withSpinner(plotlyOutput("expressionPlot", height = 807),
-                          type=7,
-                          color="#E47C23",
-                          size=0.9)                    
+                withSpinner(plotlyOutput("expressionPlot", height = 807),type=7,color="#E47C23",size=0.9)                                
             )
+            
         )
     , width = 11) #end mainPanel
 

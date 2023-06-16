@@ -9,8 +9,7 @@
 
 
 # TODO: 
-# set global min max value so the correct color is displayed when subsetting
-#werid empty rows when CORO7, EN2, CFH
+# missing gene name and alias resulting in plot error for CO day 40 ENSG...269693 (4th row)
 
 shinyServer <- function(input, output, session)
 {
@@ -62,7 +61,6 @@ shinyServer <- function(input, output, session)
         textInput("geneList_selected", width="500px",
             label=h3("Input gene list"),
             placeholder= "Your, gene, list"),
-
         actionButton("submitBtn.geneListSel", label="Submit", icon.library="font awesome",css.class='sc-button')
         )
     })    
@@ -83,7 +81,7 @@ shinyServer <- function(input, output, session)
                 <font color="#000000"><b>',description,'</b></font><br>
                 <font color="#FE0400">Higher expression in ', group1,'</font>;
                 <font color="#008BFF">Higher expression in ', group2,'</font> <br>
-                <font color="#000000"><em>','Note: a missing pvalue indicatse the presence of sample outliers for that gene.','</em></font>
+                <font color="#000000"><em>','Note: missing pvalues indicate presence of outliers and associated logFC should be considered with care.','</em></font>
                 </p>
                 ')
 
@@ -112,6 +110,7 @@ shinyServer <- function(input, output, session)
             res_table$padj <- round(res_table$padj,3)
             res_table <- res_table[order(res_table$log2FoldChange,decreasing=TRUE),]
             res_table <- res_table[!is.na(res_table$log2FoldChange),,drop=FALSE] #remove gene with no logFC
+            res_table <- res_table[!is.na(res_table$Gene),,drop=FALSE] #remove gene with no symbol
             column_order <- c("Gene","Full Name","Aliases","Gene ID","log2FoldChange","padj")
             res_table <- res_table[,column_order]
             attr(res_table, "max_val") <- max(abs(res_table$log2FoldChange), na.rm=T) #remember max logFC value even when table is subsetted
