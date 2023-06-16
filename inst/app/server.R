@@ -119,6 +119,7 @@ shinyServer <- function(input, output, session)
             res_table <- res_table[!is.na(res_table$log2FoldChange),,drop=FALSE] #remove gene with no logFC
             res_table <- res_table[!is.na(res_table$Gene),,drop=FALSE] #remove gene with no symbol
             res_table$Aliases <- sapply(res_table$Aliases, paste0, collapse=", ") #convert list to vector
+            res_table[is.na(res_table$padj),"padj"] <- 1 #set NA values to 1, happen when sample outliers
             attr(res_table, "max_val") <- max(abs(res_table$log2FoldChange), na.rm=T) #remember max logFC value even when table is subsetted
             # column_order <- c("Gene","Full Name","Aliases","Gene ID","log2FoldChange","padj")
             # res_table <- res_table[,column_order]
