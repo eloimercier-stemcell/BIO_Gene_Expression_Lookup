@@ -207,7 +207,7 @@ shinyServer <- function(input, output, session)
             ugroups <- unique(sample_table[df$Sample,"Condition"]) 
             ugroups <- c("hPSC", ugroups[ugroups!="hPSC"])  #fix the order of the group, hPSC always last
             df$Group <- factor(sample_table[df$Sample,"Condition"], levels=c(ugroups))
-            group_colors <- c("#FE0400","#008BFF")
+            group_colors <- c("#008BFF","#FE0400")
             names(group_colors) <- ugroups 
             df$Cell_Line <- sample_table[df$Sample,"Cell_Line"]
 
@@ -217,7 +217,7 @@ shinyServer <- function(input, output, session)
             plot_title <- paste0("Normalized ", symbol_selected ," Expression \nin ",group1," and ", group2) #stringr::str_wrap
 
             p <- ggplot(df, aes(x=Group, y=Expression, label=Sample, color=Group, group=Cell_Line)) + geom_jitter(width = 0.25, height=0) 
-            p <- p + ggtitle(plot_title) + xlab("") + ylab("Expression") + theme(legend.position = "none", axis.text.x = element_text(angle = -45), plot.title = element_text(size = 10)) + theme_minimal()
+            p <- p + ggtitle(plot_title) + xlab("") + ylab("Expression") + theme(legend.position = "none", axis.text.x = element_text(angle = -45), plot.title = element_text(size = 9))
             p <- p + scale_colour_manual(values=group_colors)
             p <- p + scale_x_discrete(labels= c(group2, group1)) #fix x labels
             ggplotly(p) %>% config(modeBarButtonsToRemove = c("drawcircle","eraseshape","zoomIn2d", "zoomOut2d", "autoScale2d", "hoverClosestCartesian", "hoverCompareCartesian", "pan2d", "lasso2d", "select2d", "zoom2d"), displaylogo = FALSE)# %>% config(displayModeBar = F)
