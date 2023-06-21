@@ -1,14 +1,15 @@
 
-setwd("G:/My Drive/Projects/App_development/Gene_expression_lookup")
+setwd("C:/Users/emercier/Documents/GitHub/BIO_Gene_Expression_Lookup/")
 
 library(googlesheets4)
 library(DESeq2)
 library(tximport)
 library(ggplot2)
 library(org.Hs.eg.db)
+library(openxlsx)
 
 assemblies_dir <- "S:/RND - Research and Development/10 - Work in Progress/k - ES Research/Bioinformatics/Eloi/Datasets/Assemblies"
-sample_info_url <- "https://docs.google.com/spreadsheets/d/1K-a-XdXjrAgyW76xeHiGRHUQY-WQLCWXurfE8V8-EIU/edit?pli=1#gid=0"
+sample_info_file <- "inst/app/data/Sample info.xlsx"
 
 # source("C:/Users/emercier/Documents/Scripts/R/convertGeneID2GeneNames.R")
 # ens2symbol <- geneID2GeneNames(method="Ensembl")
@@ -18,8 +19,7 @@ sample_info_url <- "https://docs.google.com/spreadsheets/d/1K-a-XdXjrAgyW76xeHiG
 #########################
 
 ##############
-STOP! Run this first and approve token!
-all_sample_info <- as.data.frame(read_sheet(sample_info_url)) #run this to get token
+all_sample_info <- as.data.frame(read.xlsx(sample_info_file, sheet=1)) #run this to get token
 ############# 
 
 all_data_quant_files <- file.path(all_sample_info$Location,"quant.sf")
@@ -110,7 +110,7 @@ for(i in seq_len(nrow(all_conditions))){
 
     res_file <- paste0(experiment_i,"_",cond_i, "_vs_","hPSC",".Rds")
     allDat <- list(results=res, counts=count_val, sampleTable=sample_table, metadata=meta)
-    saveRDS(allDat,file=file.path("data",res_file))
+    saveRDS(allDat,file=file.path("inst/app/data/datasets",res_file))
 
 }
 
