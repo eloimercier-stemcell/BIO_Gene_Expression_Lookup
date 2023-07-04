@@ -24,6 +24,12 @@ shinyServer <- function(input, output, session)
     dataListFile <- file.path(data.dir,"data_set_list.xlsx")
     dataSetList <- reactiveValues(table=NA, datasets=NA) #store all the info about the data sets
 
+    #create a complicated name for customer facing app
+    # app_name <- "BIO_Gene_Expression_Lookup"
+    # random_chars <- "7F(eMHesQiN7V.BxQ^7k_W_Ndv"
+    # if(nchar(app_name)!=nchar(random_chars)){strop("Must be the same length!")}
+    # new_app_name <- paste0(mapply(function(x,y){paste0(x,y)},strsplit(a,""),strsplit(b,"") ), collapse = "")
+
     ###################################
     #Get list of data sets
     ###################################
