@@ -28,7 +28,7 @@ shinyServer <- function(input, output, session)
     # app_name <- "BIO_Gene_Expression_Lookup"
     # random_chars <- "7F(eMHesQiN7V.BxQ^7k_W_Ndv"
     # if(nchar(app_name)!=nchar(random_chars)){strop("Must be the same length!")}
-    # new_app_name <- paste0(mapply(function(x,y){paste0(x,y)},strsplit(a,""),strsplit(b,"") ), collapse = "")
+    # new_app_name <- paste0(mapply(function(x,y){paste0(x,y)},strsplit(app_name,""),strsplit(random_chars,"") ), collapse = "")
 
     ###################################
     #Get list of data sets
