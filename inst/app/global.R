@@ -55,26 +55,41 @@ suppressMessages(library(org.Hs.eg.db))
 # org_data.db=org.Hs.eg.db
 # g2 <- smartFindAl(genes, convert_to, org_data.db, mVals="list") 
 
-geneKeys2Ensembl <- function(genes, convert_to, org_data.db, mVals="first", ...) #choose what you want to convert into regardless of key type; support mixed key types (e.g. "ENSG..." and "POU5F1" in same input)
-{
-    genes <- toupper(genes)
-    mapColumns <- c("SYMBOL", "ENSEMBL", "ALIAS")
-    mapTable <- vector("list", length(genes))
-    names(mapTable) <- genes
-    mapToColumns <- mapColumns[mapColumns!=convert_to]
+# geneKeys2Ensembl <- function(genes, convert_to, org_data.db, mVals="first", ...) #choose what you want to convert into regardless of key type; support mixed key types (e.g. "ENSG..." and "POU5F1" in same input)
+# {
+#     genes <- toupper(genes)
+#     mapColumns <- c("SYMBOL", "ENSEMBL", "ALIAS")
+#     mapTable <- vector("list", length(genes))
+#     names(mapTable) <- genes
+#     mapToColumns <- mapColumns[mapColumns!=convert_to]
 
-    for (gType in mapToColumns) {
-      isThisKeyType <- genes %in% keys(org_data.db, keytype=gType) #select input of that key type
-      gKey.current <- genes[isThisKeyType]
-      if (any(isThisKeyType)){
-        suppressMessages(mapTable[gKey.current] <- mapIds(org_data.db,keys=gKey.current,column=convert_to,keytype=gType,multiVals=mVals))
-      }
-    }
-    isThisKeyType <- genes %in% keys(org_data.db, keytype=convert_to)
-    gKey.current <- genes[isThisKeyType]
-    mapTable[gKey.current] <- gKey.current #add back keys that don't need conversion
-    mapTable[sapply(mapTable, function(x){all(is.null(x))})] <- NA
+#     for (gType in mapToColumns) {
+#       isThisKeyType <- genes %in% keys(org_data.db, keytype=gType) #select input of that key type
+#       gKey.current <- genes[isThisKeyType]
+#       if (any(isThisKeyType)){
+#         suppressMessages(mapTable[gKey.current] <- mapIds(org_data.db,keys=gKey.current,column=convert_to,keytype=gType,multiVals=mVals))
+#       }
+#     }
+#     isThisKeyType <- genes %in% keys(org_data.db, keytype=convert_to)
+#     gKey.current <- genes[isThisKeyType]
+#     mapTable[gKey.current] <- gKey.current #add back keys that don't need conversion
+#     mapTable[sapply(mapTable, function(x){all(is.null(x))})] <- NA
 
-    if (mVals!="list"){mapTable <- unlist(mapTable)}
-    return(mapTable)
+#     if (mVals!="list"){mapTable <- unlist(mapTable)}
+#     return(mapTable)
+# }
+
+
+searchKeywordInColumns <- function(keyword, search_df, search_columns=c("Gene ID", "Gene", "Full Name", "Aliases"), fixed=FALSE, whole_word=FALSE){
+#given a keyword, returns ensembl IDs for which keywords found in search_columns
+  if(!all(search_columns %in% colnames(search_df))){stop("Not all search columns found in data frame!")}
+  if(whole_word){keyword <- paste0("\\b", keyword,"\\b")} #hack to search for exact word (no substring), only works when fixed=FALSE
+
+  returns_gene_idsL <- vector("list", length(search_columns))
+  names(returns_gene_idsL) <- search_columns
+  for (i in seq_along(search_columns)){
+    returns_gene_idsL[[i]] <- search_df[grepl(keyword, search_df[,search_columns[i]], fixed=fixed), "Gene ID"]
+  }
+  returns_gene_ids <- unique(unlist(returns_gene_idsL))
+  return(returns_gene_ids)
 }

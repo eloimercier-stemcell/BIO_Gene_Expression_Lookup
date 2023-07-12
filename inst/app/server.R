@@ -71,12 +71,13 @@ shinyServer <- function(input, output, session)
 
     output$geneListSelectionUI <- renderUI({
         tagList(
-        textInput("geneList_selected", width="500px",
-            label=h3("Input gene list"),
-            placeholder= "Your, gene, list"),
-        actionButton("submitBtn.geneListSel", label="Submit", icon.library="font awesome",css.class='sc-button')
+            fluidRow(            
+                column(8,textInput("geneList_selected", width="500px", label=h3("Input gene list"), placeholder= "Your, gene, list")),
+                column(4,radioButtons("search_options",h3("Search Options"), choices=list("Fixed","Regexp","Whole word"), inline=T)) #values have to be strings
+            ),
+            actionButton("submitBtn.geneListSel", label="Submit", icon.library="font awesome",css.class='sc-button')
         )
-    })    
+    })
 
     ###################################
     #Data set info
@@ -145,15 +146,27 @@ shinyServer <- function(input, output, session)
     getResultsForSelectedGenes <- eventReactive(c(input$dataSetSelected,input$submitBtn.geneListSel),{
         res_table <- getData()[["results"]]
         if(!all(is.null(res_table))){
+
             #subset selected genes if any
             if(!all(is.null(input$geneList_selected)) & input$geneList_selected!=""){
                 #parse gene list
                 gene_vec <- unlist(trimws(strsplit(input$geneList_selected,",| ")[[1]]))
                 gene_vec <- gene_vec[gene_vec!=""]
-                #find ensembl ID
-                genes_id <- geneKeys2Ensembl(genes=gene_vec, convert_to="ENSEMBL", org_data.db=org.Hs.eg.db, mVals="list") 
-                genes_id <- na.omit(unlist(genes_id))
-                genes_id <- unique(intersect(rownames(res_table), genes_id)) #it can happen that the gene ids are not in the table
+
+                #set up search options
+                if(input$search_options=="Fixed"){
+                    fixed <- TRUE
+                    whole_word <- FALSE
+                } else if(input$search_options=="Regexp"){
+                    fixed <- FALSE
+                    whole_word <- FALSE
+                } else if(input$search_options=="Whole word"){
+                    fixed <- FALSE
+                    whole_word <- TRUE
+                }
+
+                #find ensembl IDs 
+                genes_id <- unique(unlist(sapply(gene_vec, function(x){searchKeywordInColumns(keyword=x, search_df=res_table, search_columns=c("Gene ID", "Gene", "Full Name", "Aliases"), fixed=fixed, whole_word=whole_word)})))
 
                 if(length(genes_id)){
                     return(res_table[genes_id,])
@@ -186,7 +199,8 @@ shinyServer <- function(input, output, session)
                     rownames=FALSE,
                     selection = 'single',
                     filter=list(position='top',clear = TRUE),
-                    options=list(autoWidth = FALSE, pageLength=25, scrollX = TRUE, width = "100%")) %>% 
+                    options=list(autoWidth = FALSE, pageLength=25, scrollX = TRUE, width = "100%",
+                     search = list(regex = TRUE, caseInsensitive = FALSE))) %>% 
                   formatStyle( #color by logFC
                     'log2 Fold Change vs. hPSC',
                     backgroundColor = styleInterval(brks, clrs)

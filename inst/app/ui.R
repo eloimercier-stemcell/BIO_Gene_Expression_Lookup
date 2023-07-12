@@ -59,26 +59,6 @@ shinyUI <- fluidPage(
                    background-color: #E47C23 !important;
                    color: white}')),
 
-    # tags$style(".selectize-input {margin-top: 0px;}"),
-    # tags$style(".selectize-input {border-radius: 0px;}"),
-    # tags$style(".selectize-input.dropdown-active {border-radius:0px}"),
-    # tags$style(".selectize-dropdown {border-radius:0px}"),
-    # tags$style(".handsontable table thead th{
-    #             color: white; 
-    #             background-color: #E47C23;  
-    #             font-weight:bold;}"),
-    # tags$style(".wtBorder{ background-color: #53585A !important;}"),
-    # tags$style(".introjs-helperNumberLayer {background: #E47C23;}"),
-    # tags$style(HTML(".thumbnail:hover {
-    #               position:relative;
-    #               top:-25px;
-    #               left:-35px;
-    #               width:800px;
-    #               height:auto;
-    #               display:block;
-    #               z-index:999;
-    #               }")), 
-
     tags$style(type='text/css', "#useSampDat button{background: #E47C23; color: white; !important;}"),
     tags$head(tags$style(".progress-bar{background-color:#E47C23;}
                        .col-sm-12{padding:0;margin-bottom:30px;}")),
