@@ -48,7 +48,7 @@ shinyServer <- function(input, output, session)
 
     session_ip <- get_ip(format="json")$ip
     line=paste0(date(),"\t",session_ip)
-    write(line,file=ip_logs.file ,append=TRUE) #save IP in a file
+    # write(line,file=ip_logs.file ,append=TRUE) #save IP in a file
 
     ###################################
     #Get list of data sets
@@ -240,12 +240,12 @@ shinyServer <- function(input, output, session)
         col6_search <- input$resultTable_state$columns[[6]]$search$search
         current_search <- c(input_search,table_search,col1_search,col2_search,col3_search,col4_search,col5_search,col6_search)
 
-        if(any(current_search!="")){
-            current_search.string <- paste0(current_search, collapse="\t")   
+        if(any(current_search!="") & !is.null(table_search)){ #check that a search term has been entered, and prevent update when table is rendering
+            current_search.string <- paste0(current_search, collapse="-")   
             if(!current_search.string %in% searchData$all_searches) { #has this exact search been done this session already?     
                 searchData$all_searches <- c(searchData$all_searches,current_search.string) #save new search                
-                line <- paste0(c(date(),session_ip,input$dataSetSelected,current_search.string ), collapse="\t") #add ip and dataset
-                write(line,file=search_logs.file,append=TRUE)
+                line <- paste0(c(date(),session_ip,input$dataSetSelected,current_search.string ), collapse="-") #add ip and dataset
+                # write(line,file=search_logs.file,append=TRUE)
             }
         }
     })
