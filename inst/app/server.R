@@ -22,26 +22,33 @@ shinyServer <- function(input, output, session)
     # new_app_name <- paste0(mapply(function(x,y){paste0(x,y)},strsplit(app_name,""),strsplit(random_chars,"") ), collapse = "")
 
     ###################################
-    #Get user's IP
-    ###################################
-
-    if(version$os=="linux-gnu"){ #we are live of shiny server
-        session_logs.dir <- "/home/rstudio/to-rnd-public/Session_logs/BIO_Gene_Expression_Lookup"
-    } else {
-        session_logs.dir <- "/Users/eloi.mercier/Documents" #"/Users/eloi.mercier/Library/CloudStorage/GoogleDrive-eloi.mercier@stemcell.com/My Drive/Projects/App_development/Gene_expression_lookup"
-    }
-
-    session_ip <- get_ip()
-    line=paste0(date(),"\t",session_ip)
-    write(line,file=file.path(session_logs.dir,"ip_logs.txt"),append=TRUE)
-
-    ###################################
     #App set up and options
     ###################################
 
-    data.dir <- "data"
+    data.dir <- "data" #internal app folder
     dataListFile <- file.path(data.dir,"data_set_list.xlsx")
     dataSetList <- reactiveValues(table=NA, datasets=NA) #store all the info about the data sets
+    searchData <- reactiveValues(all_searches=NULL)
+
+    if(version$os=="linux-gnu"){ #check if we are live of shiny server
+        session_logs.dir <- "/home/rstudio/to-rnd-private/Session_logs/BIO_Gene_Expression_Lookup" #default to client facing Rstudio
+        if(!file.exists(session_logs.dir)){
+            session_logs.dir <- "/home/rstudio/to-rnd-public/Session_logs/BIO_Gene_Expression_Lookup" #but perhaps we are on the internal Rstudio?
+        }
+    } else { #we are on local machine
+        session_logs.dir <- "/Users/eloi.mercier/Documents" #"/Users/eloi.mercier/Library/CloudStorage/GoogleDrive-eloi.mercier@stemcell.com/My Drive/Projects/App_development/Gene_expression_lookup"
+    }
+
+    search_logs.file <- file.path(session_logs.dir,"search_logs.txt") #keep track of all searches
+    ip_logs.file <- file.path(session_logs.dir,"ip_logs.txt")
+
+   ###################################
+    #Get user's IP
+    ###################################
+
+    session_ip <- get_ip(format="json")$ip
+    line=paste0(date(),"\t",session_ip)
+    write(line,file=ip_logs.file ,append=TRUE) #save IP in a file
 
     ###################################
     #Get list of data sets
@@ -196,7 +203,7 @@ shinyServer <- function(input, output, session)
     #Result table
     ###################################
 
-    output$resultTable <- renderDT({
+    output$resultTable <- renderDataTable({
         res_table <- getResultsForSelectedGenes()
         if(!all(is.null(res_table))){
 
@@ -213,7 +220,7 @@ shinyServer <- function(input, output, session)
                     selection = 'single',
                     filter=list(position='top',clear = TRUE),
                     options=list(autoWidth = FALSE, pageLength=25, scrollX = TRUE, width = "100%",
-                     search = list(regex = TRUE, caseInsensitive = FALSE))) %>% 
+                     search = list(regex = TRUE, caseInsensitive = TRUE))) %>% 
                   formatStyle( #color by logFC
                     'log2 Fold Change vs. hPSC',
                     backgroundColor = styleInterval(brks, clrs)
@@ -221,10 +228,27 @@ shinyServer <- function(input, output, session)
         }
     })
 
-    # dt1_search <- reactive({
-    #   input$resultTable_state$search$search
-    #     BLA <<-   input$resultTable_state   
-    # })
+    search_logs <- observe({ #get search log and print in a file
+        #capture all search fields
+        input_search <- input$geneList_selected
+        table_search <- input$resultTable_state$search$search
+        col1_search <- input$resultTable_state$columns[[1]]$search$search
+        col2_search <- input$resultTable_state$columns[[2]]$search$search
+        col3_search <- input$resultTable_state$columns[[3]]$search$search
+        col4_search <- input$resultTable_state$columns[[4]]$search$search
+        col5_search <- input$resultTable_state$columns[[5]]$search$search
+        col6_search <- input$resultTable_state$columns[[6]]$search$search
+        current_search <- c(input_search,table_search,col1_search,col2_search,col3_search,col4_search,col5_search,col6_search)
+
+        if(any(current_search!="")){
+            current_search.string <- paste0(current_search, collapse="\t")   
+            if(!current_search.string %in% searchData$all_searches) { #has this exact search been done this session already?     
+                searchData$all_searches <- c(searchData$all_searches,current_search.string) #save new search                
+                line <- paste0(c(date(),session_ip,input$dataSetSelected,current_search.string ), collapse="\t") #add ip and dataset
+                write(line,file=search_logs.file,append=TRUE)
+            }
+        }
+    })
 
     ###################################
     #Expression plot
