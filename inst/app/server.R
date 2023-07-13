@@ -15,6 +15,25 @@
 
 shinyServer <- function(input, output, session)
 {
+    #create a complicated name for customer facing app
+    # app_name <- "BIO_Gene_Expression_Lookup"
+    # random_chars <- "7F(eMHesQiN7V.BxQ^7k_W_Ndv"
+    # if(nchar(app_name)!=nchar(random_chars)){strop("Must be the same length!")}
+    # new_app_name <- paste0(mapply(function(x,y){paste0(x,y)},strsplit(app_name,""),strsplit(random_chars,"") ), collapse = "")
+
+    ###################################
+    #Get user's IP
+    ###################################
+
+    if(version$os=="linux-gnu"){ #we are live of shiny server
+        session_logs.dir <- "/home/rstudio/to-rnd-public/Session_logs/BIO_Gene_Expression_Lookup"
+    } else {
+        session_logs.dir <- "/Users/eloi.mercier/Documents" #"/Users/eloi.mercier/Library/CloudStorage/GoogleDrive-eloi.mercier@stemcell.com/My Drive/Projects/App_development/Gene_expression_lookup"
+    }
+
+    session_ip <- get_ip()
+    line=paste0(date(),"\t",session_ip)
+    write(line,file=file.path(session_logs.dir,"ip_logs.txt"),append=TRUE)
 
     ###################################
     #App set up and options
@@ -23,12 +42,6 @@ shinyServer <- function(input, output, session)
     data.dir <- "data"
     dataListFile <- file.path(data.dir,"data_set_list.xlsx")
     dataSetList <- reactiveValues(table=NA, datasets=NA) #store all the info about the data sets
-
-    #create a complicated name for customer facing app
-    # app_name <- "BIO_Gene_Expression_Lookup"
-    # random_chars <- "7F(eMHesQiN7V.BxQ^7k_W_Ndv"
-    # if(nchar(app_name)!=nchar(random_chars)){strop("Must be the same length!")}
-    # new_app_name <- paste0(mapply(function(x,y){paste0(x,y)},strsplit(app_name,""),strsplit(random_chars,"") ), collapse = "")
 
     ###################################
     #Get list of data sets
@@ -208,6 +221,10 @@ shinyServer <- function(input, output, session)
         }
     })
 
+    # dt1_search <- reactive({
+    #   input$resultTable_state$search$search
+    #     BLA <<-   input$resultTable_state   
+    # })
 
     ###################################
     #Expression plot

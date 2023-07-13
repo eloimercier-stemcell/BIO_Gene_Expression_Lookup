@@ -18,7 +18,7 @@ suppressMessages(library(shinyalert))
 suppressMessages(library(DT))
 suppressMessages(library(plotly))
 suppressMessages(library(org.Hs.eg.db))
-
+suppressMessages(library(ipify)) #FOR IP
 
 # gene_keys <- c("ENSG00000000003", "BRICD4", "HLA","AKJAHKJASHJKSHKA")
 # df=res
