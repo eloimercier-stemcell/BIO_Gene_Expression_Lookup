@@ -28,6 +28,7 @@ shinyServer <- function(input, output, session)
     data.dir <- "data" #internal app folder
     dataListFile <- file.path(data.dir,"data_set_list.xlsx")
     dataSetList <- reactiveValues(table=NA, datasets=NA) #store all the info about the data sets
+    dataTable <- reactiveValues(selected_row=NULL, show_nrows=25)
     searchData <- reactiveValues(all_searches=NULL)
 
     if(version$os=="linux-gnu"){ #check if we are live of shiny server
@@ -78,12 +79,12 @@ shinyServer <- function(input, output, session)
 
     output$dataSetSelectionUI <- renderUI({
         selectizeInput(width="500px",
-            inputId="dataSetSelected",
+            inputId="dataset_selected",
                 label=h3("Available Data Sets:"),
                 choices=dataSetList$datasets, selected = "", multiple = FALSE, 
                 options = list(placeholder = 'Select a data set',onInitialize = I('function() { this.setValue(""); }'))
             )
-        })
+    })
 
     ###################################
     #Create gene search box
@@ -92,8 +93,8 @@ shinyServer <- function(input, output, session)
     output$geneListSelectionUI <- renderUI({
         tagList(
             fluidRow(            
-                column(8,textInput("geneList_selected", width="500px", label=h3("Input gene list"), placeholder= "Your, gene, list")),
-                column(4,radioButtons("search_options",h3("Search Options"), choices=list("Fixed","Regexp","Whole word"), inline=T)) #values have to be strings
+                column(7,textInput("geneList_selected", width="500px", label=h3("Input gene list"), placeholder= "Your, gene, list")),
+                column(5,radioButtons("search_options",h3("Search Options"), choices=list("Fixed","Regexp","Whole word"), inline=T)) #values have to be strings
             ),
             actionButton("submitBtn.geneListSel", label="Submit", icon.library="font awesome",css.class='sc-button')
         )
@@ -104,11 +105,11 @@ shinyServer <- function(input, output, session)
     ###################################
 
     output$datasetInfoUI <- renderUI({
-        if(!is.null(input$dataSetSelected) & !identical(input$dataSetSelected,"")){
+        if(!is.null(input$dataset_selected) & !identical(input$dataset_selected,"")){
 
-            description <- dataSetList$table[input$dataSetSelected,"Description"]
-            group1 <- dataSetList$table[input$dataSetSelected,"Condition1"]
-            group2 <- dataSetList$table[input$dataSetSelected,"Condition2"]
+            description <- dataSetList$table[input$dataset_selected,"Description"]
+            group1 <- dataSetList$table[input$dataset_selected,"Condition1"]
+            group2 <- dataSetList$table[input$dataset_selected,"Condition2"]
 
             dataset_info_text <- paste0('
                 <p style="font-size:12px">
@@ -122,13 +123,89 @@ shinyServer <- function(input, output, session)
         }
     })
 
+
+    ###################################
+    #Walkthrough
+    ###################################
+
+
+    walkthrough_steps <- as.data.frame(matrix(
+                        c(  "#dataset_selected","Select whithin data sets available.",
+                            "#geneList_selected", "Type a gene name or several names separated by a comma to filter the table below.",
+                            "#search_options","Control the search option: match any substring ('Fixed') or the whole word ('Whole word') or use a regular expression ('Regexp').",
+                            "#resultTable","RESULT TABLE",
+                            "#expressionPlot","EXPRESSION PLOT"
+                            #add more walkthrough steps here
+                            # "#target", "Text"
+                        ), ncol=2, byrow=TRUE))
+    colnames(walkthrough_steps) <- c("element","intro")
+
+walkthrough <- Conductor$
+    new(exitOnEsc=TRUE)$
+    step(
+        el="#dataset_selected + .selectize-control", #see https://github.com/carlganz/rintrojs/issues/25
+        title = "Choose a dataset",
+        text="Select whithin data sets available."
+    )$
+    step(
+        el="#geneList_selected",
+        title = "Gene search",
+        text="Type a gene name or several names separated by a comma to filter the table below."
+    )$
+    step(
+        el="#search_options",
+        title = "Search options",
+        text="Control the search option: match any substring ('Fixed') or the whole word ('Whole word') or use a regular expression ('Regexp')."
+    )$
+    step(
+        el="#resultTable",
+        title = "Gene Expression Table",
+        text="This table display the gene name and gen ID, the log fold-change and the p-value."
+    )$
+    step(
+        el="#resultTable",
+        title = "Gene Expression Table",
+        text="Click on a row to display the detailed gene expression for that gene."
+    )$
+    step(
+        el="#expressionPlot",
+        title = "Gene Expression Plot",
+        text="This plot shows how the gene expression in the data set compares to those of hPSC data.",
+        buttons = list(
+            list(action = "back",secondary = TRUE, text = "Previous"),
+            list(action = "next",text = "Finish")
+        )
+    )
+
+
+    observeEvent(input$walkthroughBtn,{
+        #start walktorugh
+          walkthrough$init()$start()
+    })
+
+    observe({
+        #check whether walkthrough is running or not
+        is_walktrhough_active <- walkthrough$isActive()
+        if(identical(is_walktrhough_active,TRUE)){ #if running change setting
+            updateSelectizeInput(session,"dataset_selected", selected = dataSetList$datasets[[1]][1])
+            dataTable$selected_row <- 2
+            dataTable$show_nrows <- 6
+        } else { #reset default setting
+            updateSelectizeInput(session,"dataset_selected", selected = "")
+            dataTable$selected_row <- NULL
+            dataTable$show_nrows <- 25
+        }
+
+    #    introjs(session,options = list(steps=walkthrough_steps))
+    })
+
     ###################################
     #Load data
     ###################################
 
     getData <- reactive({
-        if(!is.null(input$dataSetSelected) & !identical(input$dataSetSelected,"")){
-            data_file <- dataSetList$table[input$dataSetSelected,"Location"]
+        if(!is.null(input$dataset_selected) & !identical(input$dataset_selected,"")){
+            data_file <- dataSetList$table[input$dataset_selected,"Location"]
             data_file_loc <- file.path(data_file)
             validate(need(file.exists(data_file_loc),"Sorry, the data set you selected is not available. Please contact the MBBG team."))
             data <- readRDS(data_file_loc)
@@ -163,7 +240,7 @@ shinyServer <- function(input, output, session)
     #subset selected genes if any
     ###################################
 
-    getResultsForSelectedGenes <- eventReactive(c(input$dataSetSelected,input$submitBtn.geneListSel),{
+    getResultsForSelectedGenes <- eventReactive(c(input$dataset_selected,input$submitBtn.geneListSel),{
         res_table <- getData()[["results"]]
         if(!all(is.null(res_table))){
 
@@ -217,9 +294,9 @@ shinyServer <- function(input, output, session)
 
             DT::datatable(res_table,
                     rownames=FALSE,
-                    selection = 'single',
+                    selection = list(mode='single',selected = dataTable$selected_row),
                     filter=list(position='top',clear = TRUE),
-                    options=list(autoWidth = FALSE, pageLength=25, scrollX = TRUE, width = "100%",
+                    options=list(autoWidth = FALSE, pageLength=dataTable$show_nrows, scrollX = TRUE, width = "100%",
                      search = list(regex = TRUE, caseInsensitive = TRUE))) %>% 
                   formatStyle( #color by logFC
                     'log2 Fold Change vs. hPSC',
@@ -227,6 +304,11 @@ shinyServer <- function(input, output, session)
                   )
         }
     })
+
+
+    ###################################
+    #Search logs
+    ###################################
 
     search_logs <- observe({ #get search log and print in a file
         #capture all search fields
@@ -244,7 +326,7 @@ shinyServer <- function(input, output, session)
             current_search.string <- paste0(current_search, collapse="-")   
             if(!current_search.string %in% searchData$all_searches) { #has this exact search been done this session already?     
                 searchData$all_searches <- c(searchData$all_searches,current_search.string) #save new search                
-                line <- paste0(c(date(),session_ip,input$dataSetSelected,current_search.string ), collapse="-") #add ip and dataset
+                line <- paste0(c(date(),session_ip,input$dataset_selected,current_search.string ), collapse="-") #add ip and dataset
                 # write(line,file=search_logs.file,append=TRUE)
             }
         }
@@ -272,8 +354,8 @@ shinyServer <- function(input, output, session)
             names(group_colors) <- ugroups 
             df$Cell_Line <- sample_table[df$Sample,"Cell_Line"]
 
-            group1 <- dataSetList$table[input$dataSetSelected,"Condition1"] #more verbose name for condition 1
-            group2 <- dataSetList$table[input$dataSetSelected,"Condition2"] #hPSC
+            group1 <- dataSetList$table[input$dataset_selected,"Condition1"] #more verbose name for condition 1
+            group2 <- dataSetList$table[input$dataset_selected,"Condition2"] #hPSC
 
             plot_title <- paste0("Normalized ", symbol_selected ," Expression \nin ",group1," and ", group2) #stringr::str_wrap
 

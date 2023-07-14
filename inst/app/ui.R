@@ -9,6 +9,10 @@ css_dir <- "./css"
 
 shinyUI <- fluidPage(
 
+    # introjsUI(), #for dynamic walkthrough
+      useConductor(),
+
+
     ###############################
     ###############################
     #              CSS            #
@@ -30,7 +34,7 @@ shinyUI <- fluidPage(
     includeCSS(file.path(css_dir,"brand.css")),
     includeCSS(file.path(css_dir,"research_areas.css")),
     includeCSS(file.path(css_dir,"print.css")),
-  
+    
   
     ###############################
     ###############################
@@ -55,6 +59,31 @@ shinyUI <- fluidPage(
     tags$style(type='text/css', "#useSampDat button{background: #E47C23; color: white; !important;}"),
     tags$head(tags$style(".progress-bar{background-color:#E47C23;}
                        .col-sm-12{padding:0;margin-bottom:30px;}")),
+
+#Walkthrough options
+tags$head(
+  tags$style(
+    HTML("
+.shepherd-header {
+  background-color: grey !important;
+}
+.shepherd-title {
+  color: white;
+  font-size: 20px;
+}
+.shepherd-text {
+  font-size: 14px;
+}
+.shepherd-button {
+  background-color: #E47C23 
+}
+
+
+")
+  )
+),
+
+
 
     ###############################
     ###############################
@@ -134,14 +163,15 @@ shinyUI <- fluidPage(
 
         fluidRow(
             column(12,
-                box(width=5, height="120px",
+                box(width=4, height="120px",
                     uiOutput("dataSetSelectionUI"),
                     status="primary", solidHeader =T
                 ),
-                box(width=7, height="120px",
+                box(width=6, height="120px",
                     uiOutput("geneListSelectionUI"),   
                     status="primary", solidHeader =T
-                )             
+                ),
+                actionButton("walkthroughBtn", label="Interactive Walkthrough", icon.library="font awesome",css.class='sc-button')
             ),
 
 
