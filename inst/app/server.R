@@ -145,7 +145,10 @@ walkthrough <- Conductor$
     step(
         el="#dataset_selected + .selectize-control", #see https://github.com/carlganz/rintrojs/issues/25
         title = "Choose a dataset",
-        text="Select whithin data sets available."
+        text="Select whithin data sets available.<br><br><h5>Press `Escape` to exit this walkthrough.</h5>",
+        buttons = list(
+            list(action = "next",text = "Next")
+        )
     )$
     step(
         el="#geneList_selected",

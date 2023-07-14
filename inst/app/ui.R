@@ -63,25 +63,26 @@ shinyUI <- fluidPage(
 #Walkthrough options
 tags$head(
   tags$style(
-    HTML("
-.shepherd-header {
-  background-color: grey !important;
-}
-.shepherd-title {
-  color: white;
-  font-size: 20px;
-}
-.shepherd-text {
-  font-size: 14px;
-}
-.shepherd-button {
-  background-color: #E47C23 
-}
-
-
-")
+    HTML(".shepherd-header {
+            background-color: grey !important;
+        }
+        .shepherd-title {
+            color: white;
+            font-size: 20px;
+        }
+        .shepherd-text {
+            font-size: 14px;
+        }
+        .shepherd-button{
+            background:#E47C23;border:0;
+            }
+        .shepherd-button:not(:disabled):hover{
+            background:#C96815;
+            }")
   )
 ),
+
+
 
 
 

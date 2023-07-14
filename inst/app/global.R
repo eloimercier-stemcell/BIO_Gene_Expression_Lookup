@@ -19,9 +19,8 @@ suppressMessages(library(DT))
 suppressMessages(library(plotly))
 suppressMessages(library(org.Hs.eg.db))
 suppressMessages(library(ipify)) #FOR IP
-suppressMessages(library(rintrojs)) 
+suppressMessages(library(conductor)) 
 
-library(conductor)
 
 searchKeywordInColumns <- function(keyword, search_df, search_columns=c("Gene ID", "Gene", "Full Name", "Aliases"), fixed=FALSE, whole_word=FALSE){
 #given a keyword, returns ensembl IDs for which keywords found in search_columns
